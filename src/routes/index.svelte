@@ -1,6 +1,27 @@
-<script>
-    import { supabase } from "$lib/utils/db";
+<script lang="ts">
+    import { supabase, searchReplays } from "$lib/utils/db"
+    import { Search } from 'carbon-components-svelte'
+    import ReplayPreview from '$components/Replays/ReplayPreview.svelte'
+    import debounce from 'just-debounce-it'
+
+    $: searchResults = [] as Replay[];
+    $: {
+        console.log('searchResults', searchResults)
+    }
+
+    const handleSearchInput = debounce(async (e: any) => {
+        searchResults = [];
+        if (!e.target?.value.trim()) return;
+
+        const replays = await searchReplays(e.target!.value);
+
+        searchResults = replays;
+    }, 250, false);
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+
+<Search size="lg" on:input={handleSearchInput} on:clear={() => searchResults = []}/>
+
+{#each searchResults as replay}
+    <ReplayPreview replay={replay} />
+{/each}
