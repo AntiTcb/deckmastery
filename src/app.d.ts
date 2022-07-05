@@ -23,3 +23,5 @@ interface Replay {
     uploaded_by: string;
     tags: Tag[];
 }
+
+type Role = 'admin' | 'patron' | 'user';

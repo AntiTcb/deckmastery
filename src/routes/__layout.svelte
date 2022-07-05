@@ -7,6 +7,14 @@
     import Footer from '$components/Footer.svelte'
 
     import { Content } from 'carbon-components-svelte'
+    import { supabase } from '$lib/utils/db'
+    import { user } from '$stores/session'
+
+    user.set(supabase.auth.user());
+
+    supabase.auth.onAuthStateChange((_, session) => {
+        user.set(session?.user);
+    });
 </script>
 
 <Header />

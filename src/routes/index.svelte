@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { supabase, searchReplays } from "$lib/utils/db"
-    import { Search } from 'carbon-components-svelte'
     import ReplayPreview from '$components/Replays/ReplayPreview.svelte'
     import debounce from 'just-debounce-it'
+
+    import { searchReplays } from "$lib/utils/db"
+    import { Search } from 'carbon-components-svelte'
 
     $: searchResults = [] as Replay[];
     $: {
@@ -18,7 +19,6 @@
         searchResults = replays;
     }, 250, false);
 </script>
-
 
 <Search size="lg" on:input={handleSearchInput} on:clear={() => searchResults = []}/>
 

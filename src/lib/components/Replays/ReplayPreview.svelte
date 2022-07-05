@@ -1,13 +1,12 @@
 <script lang="ts">
     import { Button, Tag, Tile } from 'carbon-components-svelte'
+    import { user } from '$stores/session'
 
     export let replay: Replay;
 </script>
 
 <Tile>
     <h2>{replay.title}</h2>
-
-
     <section>
         <Button href={replay.replay_url ?? "#"}>Watch Replay</Button>
         {#each replay.tags as tag }
