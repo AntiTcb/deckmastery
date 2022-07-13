@@ -19,20 +19,11 @@ const config = {
     adapter: adapter(),
 
     alias: {
-      $components: 'src/lib/components',
-      $utils: 'src/lib/utils',
-      $stores: 'src/lib/stores/',
+        $components: 'src/lib/components',
+        $utils: 'src/lib/utils',
+        $stores: 'src/lib/stores/',
+        $db: 'src/lib/utils/db',
     },
-
-    // vite: {
-    //   css: {
-    //     preprocessorOptions: {
-    //       scss: {
-    //         additionalData: '@use "src/variables.scss" as *;'
-    //       }
-    //     }
-    //   }
-    // }
   }
 };
 

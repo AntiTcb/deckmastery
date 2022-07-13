@@ -43,3 +43,8 @@ type AppUser = {
     created: Date;
     avatar_url: string;
 }
+
+type Card = {
+    id?: string;
+    name?: string;
+}
