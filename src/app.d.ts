@@ -3,10 +3,10 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare namespace App {
-	// interface Locals {}
-	// interface Platform {}
-	interface Session {}
-	interface Stuff {}
+    // interface Locals {}
+    // interface Platform {}
+    // interface Session {}
+    // interface Stuff {}
 }
 
 interface Tag {
@@ -24,4 +24,13 @@ interface Replay {
     tags: Tag[];
 }
 
-type Role = 'admin' | 'patron' | 'user';
+type Role = 'Admin' | 'Editor' | 'Patron' | 'User';
+
+type AppUser = {
+    id: string;
+    username: string;
+    email: string;
+    role: Role;
+    created: Date;
+    avatar_url: string;
+}

@@ -22,16 +22,6 @@ const config = {
       $components: 'src/lib/components',
       $utils: 'src/lib/utils',
       $stores: 'src/lib/stores/',
-    },
-
-    vite: {
-      css: {
-        preprocessorOptions: {
-          scss: {
-            additionalData: '@use "src/variables.scss" as *;'
-          }
-        }
-      }
     }
   }
 };
