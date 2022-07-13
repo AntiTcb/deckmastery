@@ -3,10 +3,19 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare namespace App {
-    // interface Locals {}
+    interface Locals {
+        user?: Supabase.User;
+    }
     // interface Platform {}
-    // interface Session {}
-    // interface Stuff {}
+    interface Session {
+        user?: Supabase.User;
+    }
+    interface Stuff {}
+}
+
+interface AppUser {
+    supabaseUser?: Supabase.User;
+
 }
 
 interface Tag {
