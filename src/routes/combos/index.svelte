@@ -11,7 +11,7 @@
 
     onMount(async () => {
         // TODO: store
-        let { data } = await supabase.from('cards').select('id,name');
+        const { data } = await supabase.from('cards').select('id,name');
 
         cardNames = data.map(c => { return { id: c.id, text: c.name } });
     })
@@ -21,9 +21,9 @@
         return item.text.toLowerCase().includes(value.toLowerCase());
     }
 
-    const onComboSelect = ({ detail: { selectedItem : { text } } }: CustomEvent) => {
-        console.log('route:', nameToRoute(text));
-        goto(`/combos/${nameToRoute(text)}`);
+    const onComboSelect = ({ detail: { selectedItem } }: CustomEvent) => {
+        console.log('route:', nameToRoute(selectedItem.text));
+        goto(`/combos/${nameToRoute(selectedItem.text)}`);
     }
 </script>
 
