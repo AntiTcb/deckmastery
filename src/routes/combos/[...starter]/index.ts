@@ -19,9 +19,9 @@ export async function get({params}) {
     }
 
     return {
-        status: 200,
-        body: {
-            data
+        status: 303,
+        headers: {
+            location: `/combos/${data[0].id}`
         }
     };
 }

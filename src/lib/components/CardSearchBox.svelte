@@ -2,9 +2,6 @@
     import { ComboBox } from 'carbon-components-svelte'
     import { supabase } from '$utils/db'
     import { onMount } from 'svelte';
-    import { nameToRoute } from '$utils/cards';
-    import { goto } from '$app/navigation';
-    import CardSearchBox from '$components/CardSearchBox.svelte'
 
     $: cardNames = [];
 
@@ -20,10 +17,9 @@
         return item.text.toLowerCase().includes(value.toLowerCase());
     }
 
-    const onComboSelect = ({ detail: { selectedItem } }: CustomEvent) => {
-        console.log('route:', nameToRoute(selectedItem.text));
-        goto(`/combos/${nameToRoute(selectedItem.text)}`);
-    }
+    export let onComboSelect: any;
+    export let titleText: string;
+    export let placeholder: string;
 </script>
 
-<CardSearchBox titleText="Starter Card" placeholder="Search for a starter card" onComboSelect={onComboSelect} />
+<ComboBox bind:titleText bind:placeholder {shouldFilterItem} items={cardNames} on:select={onComboSelect} />
