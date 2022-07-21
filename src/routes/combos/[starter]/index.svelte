@@ -33,8 +33,8 @@
 
 {#await cardIdToName(parseInt(starter.id ?? ''))}
     <Loading />
-{:then value}
-    <h1>{value}</h1>
+{:then cardName}
+    <h1>{cardName}</h1>
 
     {#if showExtenderSearch}
         <CardSearchBox titleText="Extender" placeholder="Search an extender" onComboSelect={onComboSelect} />
