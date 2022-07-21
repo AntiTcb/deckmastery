@@ -12,18 +12,14 @@ declare namespace App {
     }
     interface Stuff {}
 }
-
 interface AppUser {
     supabaseUser?: Supabase.User;
-
 }
-
 interface Tag {
     id: number;
     name: string;
     type: string;
 }
-
 interface Replay {
     id: number;
     created_at: Date;
@@ -31,10 +27,10 @@ interface Replay {
     title: string;
     uploaded_by: string;
     tags: Tag[];
+    starter_card_id: number;
+    extender_card_id: number?;
 }
-
 type Role = 'Admin' | 'Editor' | 'Patron' | 'User';
-
 type AppUser = {
     id: string;
     username: string;
@@ -43,8 +39,7 @@ type AppUser = {
     created: Date;
     avatar_url: string;
 }
-
 type Card = {
-    id?: string;
+    id: string?;
     name?: string;
 }

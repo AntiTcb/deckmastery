@@ -1,3 +1,16 @@
+<script context="module" lang="ts">
+    export async function load({ fetch, params }) {
+        const resp = await fetch(`/api/combos/${params.starter}`);
+        const data = await resp.json();
+
+        return {
+            props: {
+                starter: data.starter as Card,
+            },
+        };
+    }
+</script>
+
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { page } from '$app/stores'
@@ -10,13 +23,15 @@
 
     $: showExtenderSearch = false;
 
+    export let starter: Card;
+
     const onComboSelect = ({ detail: { selectedItem }}: CustomEvent) => {
         console.log('route:', nameToRoute(selectedItem.text));
         goto(`/combos/${$page.params.starter}/${nameToRoute(selectedItem.text)}`);
     }
 </script>
 
-{#await cardIdToName(parseInt($page.params.starter))}
+{#await cardIdToName(parseInt(starter.id ?? ''))}
     <Loading />
 {:then value}
     <h1>{value}</h1>
