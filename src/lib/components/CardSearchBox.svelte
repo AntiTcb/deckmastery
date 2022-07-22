@@ -1,16 +1,23 @@
 <script lang="ts">
-    import { ComboBox } from 'carbon-components-svelte'
-    import { supabase } from '$utils/db'
-    import { onMount } from 'svelte';
+    import { ComboBox, Loading } from 'carbon-components-svelte'
+    import { supabase } from '$db'
+    import type ComboBoxItem from 'carbon-components-svelte/types/ComboBox/ComboBox.svelte'
 
-    $: cardNames = [];
+    let searchValue = '';
+    let cardNames = [] as ComboBoxItem[];
 
-    onMount(async () => {
-        // TODO: store
-        const { data } = await supabase.from('cards').select('id,name');
+    $: {
+        console.log(searchValue)
 
-        cardNames = data.map(c => { return { id: c.id, text: c.name } });
-    })
+        if (searchValue) {
+            fetch(`/api/cards?name=${searchValue}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                cardNames = data.data.map(c => { return { id: c.id, text: c.name } })
+            });
+        }
+    }
 
     const shouldFilterItem = (item: any, value: any) => {
         if (!value) return true;
@@ -22,4 +29,13 @@
     export let placeholder: string;
 </script>
 
-<ComboBox bind:titleText bind:placeholder {shouldFilterItem} items={cardNames} on:select={onComboSelect} />
+<div>
+    <ComboBox class="card-search-box" bind:titleText bind:placeholder {shouldFilterItem} items={cardNames} on:select={onComboSelect} bind:value={searchValue} />
+</div>
+
+<style>
+    div {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+</style>
