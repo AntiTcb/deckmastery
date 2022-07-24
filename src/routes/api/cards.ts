@@ -1,7 +1,7 @@
 import { supabase } from '$db';
+import type { RequestHandler } from '@sveltejs/kit';
 
-/** @type {import('@sveltejs/kit').RequestHandler} */
-export async function get({ url }) {
+export const GET: RequestHandler = async ({ url }) => {
 
     let query = supabase.from('cards').select('*');
 

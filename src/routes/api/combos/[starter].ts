@@ -1,6 +1,7 @@
 import { supabase } from '$db'
+import type { RequestHandler } from '@sveltejs/kit';
 
-export async function get( { params }) {
+export const GET: RequestHandler = async ( { params }) => {
     const { data, error } = await supabase.rpc('search_cards', { card_name: params.starter });
 
     return error ? {

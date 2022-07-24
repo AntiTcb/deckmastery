@@ -2,7 +2,7 @@ import type { RequestHandler } from '@sveltejs/kit';
 
 import { supabase } from '$lib/utils/db';
 
-export const post: RequestHandler = async({ request }) => {
+export const POST: RequestHandler = async({ request }) => {
     const form = await request.formData();
     const email = form.get('email');
 
