@@ -1,13 +1,12 @@
+import type { SvelteKitSession } from "lucia-sveltekit/types";
+
 /// <reference types="@sveltejs/kit" />
-
-import type { User } from "lucia-sveltekit/types";
-
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare namespace App {
     // interface Locals { }
     interface Session {
-        lucia: import("lucia-sveltekit/types").SvelteKitSession<UserInfo>;
+        lucia: SvelteKitSession<UserInfo>;
     }
     // interface Stuff {}
     // interface Platform {}

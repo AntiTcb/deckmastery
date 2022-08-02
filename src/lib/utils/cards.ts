@@ -1,4 +1,4 @@
-import { supabase } from '$utils/db'
+import { supabase } from '$db'
 
 export const nameToRoute = (name: string) : string => {
     // remove all non alphanumeric characters
