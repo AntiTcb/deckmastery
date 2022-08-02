@@ -117,7 +117,7 @@ export const GET: RequestHandler = async({ url }) => {
     catch (e) {
         const error = e as Error;
 
-        if (error.message === `AUTH_DUPLICATE_USER_DATA`) {
+        if (error?.message === `AUTH_DUPLICATE_USER_DATA`) {
             return {
                 status: 400,
                 body: JSON.stringify({
@@ -130,7 +130,7 @@ export const GET: RequestHandler = async({ url }) => {
             status: 500,
             body: JSON.stringify({
                 message: 'An unknown error occurred',
-                error,
+                error: e,
                 step: 'CREATE_USER'
             }),
         }
