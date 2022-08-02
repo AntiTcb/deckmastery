@@ -27,7 +27,7 @@ export const GET: RequestHandler = async({ url }) => {
             code,
             client_id: clientId,
             client_secret: clientSecret,
-            redirect_uri: `http://localhost:5173/api/auth/discord`
+            redirect_uri: `${url.origin}/api/auth/discord`,
         })
     })
 
