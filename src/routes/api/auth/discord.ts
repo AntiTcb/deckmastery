@@ -32,7 +32,14 @@ export const GET: RequestHandler = async({ url }) => {
     })
 
     if (!getAccessTokenResponse.ok) {
-        console.log((await getAccessTokenResponse.text()))
+        console.log('Response:', (await getAccessTokenResponse.text()))
+        console.log('Request Body:', {
+            grant_type: 'authorization_code',
+            code,
+            client_id: clientId,
+            client_secret: clientSecret,
+            redirect_uri: `${url.origin}/api/auth/discord`,
+        })
         return {
             status: 500,
             body: JSON.stringify({
