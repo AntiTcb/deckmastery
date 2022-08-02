@@ -1,19 +1,18 @@
 /// <reference types="@sveltejs/kit" />
 
+import type { User } from "lucia-sveltekit/types";
+
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare namespace App {
-    interface Locals {
-        user?: Supabase.User;
-    }
-    // interface Platform {}
+    interface Locals { }
     interface Session {
-        user?: Supabase.User;
+        lucia: import('lucia-sveltekit/types').SvelteKitSession<{
+            discord_email: string;
+        }>;
     }
-    interface Stuff {}
-}
-interface AppUser {
-    supabaseUser?: Supabase.User;
+    // interface Stuff {}
+    // interface Platform {}
 }
 interface Tag {
     id: number;
