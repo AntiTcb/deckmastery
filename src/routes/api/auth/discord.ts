@@ -12,7 +12,7 @@ export const GET: RequestHandler = async({ url }) => {
         return {
             status: 400,
             body: JSON.stringify({
-                message: 'Invlaid request URL parameters'
+                message: 'Invalid request URL parameters'
             }),
         };
     }
@@ -90,11 +90,11 @@ export const GET: RequestHandler = async({ url }) => {
         catch (e) {
             return {
                 status: 500,
-                body: JSON.stringify({
+                body: {
                     message: 'An unknown error occurred',
                     error: e,
                     step: 'AUTHENTICATE_USER'
-                }),
+                },
             };
         }
     }
@@ -120,19 +120,19 @@ export const GET: RequestHandler = async({ url }) => {
         if (error?.message === `AUTH_DUPLICATE_USER_DATA`) {
             return {
                 status: 400,
-                body: JSON.stringify({
+                body: {
                     message: 'Email already in use'
-                }),
+                },
             }
         }
 
         return {
             status: 500,
-            body: JSON.stringify({
+            body: {
                 message: 'An unknown error occurred',
                 error: e,
                 step: 'CREATE_USER'
-            }),
+            },
         }
     }
 };
