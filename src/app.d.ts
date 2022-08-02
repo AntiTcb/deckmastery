@@ -5,14 +5,18 @@ import type { User } from "lucia-sveltekit/types";
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare namespace App {
-    interface Locals { }
+    // interface Locals { }
     interface Session {
-        lucia: import('lucia-sveltekit/types').SvelteKitSession<{
-            discord_email: string;
-        }>;
+        lucia: import("lucia-sveltekit/types").SvelteKitSession<UserInfo>;
     }
     // interface Stuff {}
     // interface Platform {}
+}
+
+interface UserInfo {
+    username: string;
+    discord_email: string;
+    patreon_email: string;
 }
 interface Tag {
     id: number;
