@@ -1,30 +1,16 @@
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
+import { optimizeImports } from 'carbon-preprocess-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  // Consult https://github.com/sveltejs/svelte-preprocess
-  // for more information about preprocessors
-  preprocess: [
-    preprocess({
-      postcss: true,
+	// Consult https://github.com/sveltejs/svelte-preprocess
+	// for more information about preprocessors
+	preprocess: [preprocess(), optimizeImports()],
 
-      scss: {
-        prependData: '@use "src/variables.scss" as *;'
-      }
-    })
-  ],
-
-  kit: {
-    adapter: adapter(),
-
-    alias: {
-        $components: 'src/lib/components',
-        $utils: 'src/lib/utils',
-        $stores: 'src/lib/stores/',
-        $db: 'src/lib/utils/db',
-    },
-  }
+	kit: {
+		adapter: adapter(),
+	}
 };
 
 export default config;
