@@ -9,7 +9,6 @@
     export let data;
 
     const onComboSelect = ({ detail: { selectedItem } }: CustomEvent) => {
-        console.log('route:', nameToRoute(selectedItem.text));
         goto(`/combos/${nameToRoute(selectedItem.text)}`);
     }
 </script>

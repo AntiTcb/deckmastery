@@ -1,9 +1,12 @@
 <script lang="ts">
+    import type { PageData } from './$types'
+
+    import ComboList from '$components/ComboList.svelte';
     import { cardIdToName } from '$utils/cards';
     import { Loading } from 'carbon-components-svelte';
 
-    export let starter: Card;
-    export let extender: Card;
+    export let data : PageData;
+    let { starter, extender } = data;
 
     const getCardNames = async () => {
         return {
@@ -18,4 +21,6 @@
 {:then { s: starterName, e: extenderName } }
     <h1>{starterName}</h1>
     <h2>{extenderName}</h2>
+
+    <ComboList starter={starter} extender={extender} />
 {/await}

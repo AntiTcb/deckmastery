@@ -6,26 +6,52 @@ const supabaseKey = dev
     ? import.meta.env.VITE_SUPABASE_PRIVATE_KEY
     : import.meta.env.VITE_SUPABASE_PUBLIC_KEY;
 
-// export const getReplays = async () => {
-//     const { data, error } = await supabase.from(`replays`).select(`id,created_at,replay_url,title,uploaded_by`);
+export const searchReplays = async (starter: Card, extender: Card | null = null) => {
+    let query = supabase
+        .from('replays')
+        .select('*')
+        .eq('status', 'approved')
+        .eq('starter_card_id', starter.id);
 
-//     if (error) {
-//         console.error(error);
-//         return [];
-//     }
+    if (extender) {
+        query = query.eq('extender_card_id', extender.id);
+    }
 
-//     return data as Replay[];
-// }
-// export const getReplay = async (id: number) => {
-//     const { data, error } = await supabase.from(`replays`).select(`id,created_at,replay_url,title,uploaded_by`).eq(`id`, id);
+    const { data, error } = await query;
 
-//     if (error) {
-//         console.error(error);
-//         return null;
-//     }
+    if (error) {
+        console.error(error);
+        return [];
+    }
 
-//     return data[0] as Replay;
-// }
+    return data as Replay[];
+};
+
+export const getReplays = async () => {
+    const { data, error } = await supabase
+        .from(`replays`)
+        .select(`id,created_at,replay_url,title,uploaded_by`);
+
+    if (error) {
+        console.error(error);
+        return [];
+    }
+
+    return data as Replay[];
+};
+export const getReplay = async (id: number) => {
+    const { data, error } = await supabase
+        .from(`replays`)
+        .select(`id,created_at,replay_url,title,uploaded_by`)
+        .eq(`id`, id);
+
+    if (error) {
+        console.error(error);
+        return null;
+    }
+
+    return data[0] as Replay;
+};
 // export const searchReplays = async (titleName: string, tagName: string = '', tagIds: number[] = []) => {
 //     const { data, error } = await supabase.from(`replays`).select(`id,created_at,replay_url,title,uploaded_by,tags(name)`).ilike('title', `%${titleName}%`);
 

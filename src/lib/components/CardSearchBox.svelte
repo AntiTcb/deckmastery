@@ -5,13 +5,10 @@
     let cardNames = [] as any[];
 
     $: {
-        console.log(searchValue)
-
         if (searchValue) {
             fetch(`/api/cards?name=${searchValue}`)
             .then(res => res.json())
             .then((data : Card[]) => {
-                console.log(data);
                 cardNames = data.map(c => { return { id: c.id, text: c.name } })
             });
         }

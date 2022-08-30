@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { PageData } from './$types'
+
     import { goto } from '$app/navigation';
     import { page } from '$app/stores'
     import { cardIdToName, nameToRoute } from '$utils/cards';
@@ -6,15 +8,14 @@
 
     import Add from 'carbon-icons-svelte/lib/Add.svelte'
     import CardSearchBox from '$components/CardSearchBox.svelte'
+    import ComboList from '$components/ComboList.svelte';
 
     $: showExtenderSearch = false;
 
-    export let data;
-
+    export let data : PageData;
     let { starter } = data;
 
     const onComboSelect = ({ detail: { selectedItem }}: CustomEvent) => {
-        console.log('route:', nameToRoute(selectedItem.text));
         goto(`/combos/${$page.params.starter}/${nameToRoute(selectedItem.text)}`);
     }
 </script>
@@ -29,6 +30,8 @@
     {:else}
         <Button class="extender-btn" icon={Add} size="small" on:click={() => showExtenderSearch = !showExtenderSearch}>Add an extender</Button>
     {/if}
+
+    <ComboList starter={starter} />
 {/await}
 
 <style>

@@ -37,8 +37,8 @@ type AppUser = {
     role: Role;
     created: Date;
     avatar_url: string;
-}
+};
 type Card = {
     id: string?;
     name?: string;
-}
+};

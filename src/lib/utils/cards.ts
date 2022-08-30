@@ -17,7 +17,6 @@ export const cardIdToName = async (id: number): Promise<string> => {
         .eq('id', id)
         .limit(1)
         .single();
-    console.log(data);
     if (error) {
         console.error(error);
         return '';
