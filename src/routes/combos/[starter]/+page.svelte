@@ -9,7 +9,9 @@
 
     $: showExtenderSearch = false;
 
-    export let starter: Card;
+    export let data;
+
+    let { starter } = data;
 
     const onComboSelect = ({ detail: { selectedItem }}: CustomEvent) => {
         console.log('route:', nameToRoute(selectedItem.text));
