@@ -69,6 +69,10 @@ export const GET: RequestHandler = async({ url }) => {
     if (user) {
         try {
             const authenticateUser = await auth.authenticateUser(`discord`, email, '');
+
+            console.debug(`Authenticated user`);
+            console.table({user, authenticateUser});
+
             return new Response(null, {
                 status: 302,
                 headers: {
