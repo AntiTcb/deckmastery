@@ -9,10 +9,12 @@ declare namespace App {
     // interface PublicEnv {}
 }
 
-interface UserInfo {
-    username: string;
-    discord_email: string;
-    patreon_email: string;
+declare namespace Lucia {
+    interface UserData {
+        username: string,
+        discord_email: string;
+        patreon_email?: string;
+    }
 }
 interface Tag {
     id: number;

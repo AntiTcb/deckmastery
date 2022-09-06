@@ -1,12 +1,8 @@
 <script lang="ts">
-    import { supabase } from '$supabase'
-    import { onMount } from 'svelte';
-    import { nameToRoute } from '$utils/cards';
+    import { nameToRoute } from '$utils/urlHelper';
     import { goto } from '$app/navigation';
+
     import CardSearchBox from '$components/CardSearchBox.svelte'
-
-
-    export let data;
 
     const onComboSelect = ({ detail: { selectedItem } }: CustomEvent) => {
         goto(`/combos/${nameToRoute(selectedItem.text)}`);

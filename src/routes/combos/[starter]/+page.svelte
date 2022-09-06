@@ -3,8 +3,8 @@
 
     import { goto } from '$app/navigation';
     import { page } from '$app/stores'
-    import { cardIdToName, nameToRoute } from '$utils/cards';
-    import { Button, Loading } from 'carbon-components-svelte';
+    import { nameToRoute } from '$utils/urlHelper';
+    import { Button } from 'carbon-components-svelte';
 
     import Add from 'carbon-icons-svelte/lib/Add.svelte'
     import CardSearchBox from '$components/CardSearchBox.svelte'
@@ -20,19 +20,19 @@
     }
 </script>
 
-{#await cardIdToName(parseInt(starter.id ?? ''))}
-    <Loading />
-{:then cardName}
-    <h1>{cardName}</h1>
+<svelte:head>
+    <title>{starter.name} Combos | Deck Mastery</title>
+</svelte:head>
 
-    {#if showExtenderSearch}
-        <CardSearchBox titleText="Extender" placeholder="Search an extender" onComboSelect={onComboSelect} />
-    {:else}
-        <Button class="extender-btn" icon={Add} size="small" on:click={() => showExtenderSearch = !showExtenderSearch}>Add an extender</Button>
-    {/if}
+<h1>{starter.name}</h1>
 
-    <ComboList starter={starter} />
-{/await}
+{#if showExtenderSearch}
+    <CardSearchBox titleText="Extender" placeholder="Search an extender" onComboSelect={onComboSelect} />
+{:else}
+    <Button class="extender-btn" icon={Add} size="small" on:click={() => showExtenderSearch = !showExtenderSearch}>Add a card to combo</Button>
+{/if}
+
+<ComboList starter={starter} />
 
 <style>
     :global(.extender-btn) {

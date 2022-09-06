@@ -1,5 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import type { Error } from 'lucia-sveltekit'
+
 import { auth } from '$lucia'
 import { error } from '@sveltejs/kit'
 
@@ -54,8 +55,8 @@ export const GET: RequestHandler = async({ url }) => {
     if (!getUserEmailResponse.ok) {
         console.log((await getUserEmailResponse.text()))
         throw error(500, JSON.stringify({
-                message: 'Failed to fetch data from Discord',
-                step: 'GET_USER_EMAIL'
+            message: 'Failed to fetch data from Discord',
+            step: 'GET_USER_EMAIL'
         }));
     };
 
@@ -70,26 +71,20 @@ export const GET: RequestHandler = async({ url }) => {
         try {
             const authenticateUser = await auth.authenticateUser(`discord`, email, '');
 
-            console.debug(`Authenticated user`);
-            console.table({user, authenticateUser});
-
             return new Response(null, {
                 status: 302,
                 headers: {
-                    "set-cookie": authenticateUser.cookies,
+                    "set-cookie": authenticateUser.cookies.join(),
                     location: "/",
                 },
             })
         }
         catch (e) {
-            return {
-                status: 500,
-                body: {
-                    message: 'An unknown error occurred',
-                    error: e,
-                    step: 'AUTHENTICATE_USER'
-                },
-            };
+            throw error (500, JSON.stringify({
+                message: 'An unknown error occurred',
+                error: e,
+                step: 'AUTHENTICATE_USER'
+            }));
         }
     }
 
@@ -104,7 +99,7 @@ export const GET: RequestHandler = async({ url }) => {
         return new Response(null, {
             status: 302,
             headers: {
-                "set-cookie": createUser.cookies,
+                "set-cookie": createUser.cookies.join(),
                 location: "/",
             },
         })

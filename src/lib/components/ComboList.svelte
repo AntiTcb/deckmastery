@@ -1,9 +1,7 @@
 <script lang="ts">
     import { searchReplays } from '$supabase'
 
-    import { OutboundLink,
-        StructuredList, StructuredListHead, StructuredListRow, StructuredListCell, StructuredListBody
-    } from 'carbon-components-svelte'
+    import { OutboundLink, StructuredList, StructuredListHead, StructuredListRow, StructuredListCell, StructuredListBody } from 'carbon-components-svelte'
 
     export let starter: Card;
     export let extender: Card | null = null;

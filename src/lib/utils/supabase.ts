@@ -39,6 +39,7 @@ export const getReplays = async () => {
 
     return data as Replay[];
 };
+
 export const getReplay = async (id: number) => {
     const { data, error } = await supabase
         .from(`replays`)
