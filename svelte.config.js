@@ -21,6 +21,7 @@ const config = {
             $layouts: 'src/lib/layouts',
             $utils: 'src/lib/utils',
             $supabase: 'src/lib/utils/supabase.ts',
+            $lucia: 'src/lib/utils/lucia.ts',
         },
     },
 };
