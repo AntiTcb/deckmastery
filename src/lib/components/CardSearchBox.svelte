@@ -1,20 +1,15 @@
 <script lang="ts">
-    import { ComboBox, Loading } from 'carbon-components-svelte'
-    import { supabase } from '$db'
-    import type ComboBoxItem from 'carbon-components-svelte/types/ComboBox/ComboBox.svelte'
+    import { ComboBox } from 'carbon-components-svelte'
 
     let searchValue = '';
-    let cardNames = [] as ComboBoxItem[];
+    let cardNames = [] as any[];
 
     $: {
-        console.log(searchValue)
-
         if (searchValue) {
             fetch(`/api/cards?name=${searchValue}`)
             .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                cardNames = data.data.map(c => { return { id: c.id, text: c.name } })
+            .then((data : Card[]) => {
+                cardNames = data.map(c => { return { id: c.id, text: c.name } })
             });
         }
     }

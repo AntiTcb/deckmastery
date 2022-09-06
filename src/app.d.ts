@@ -1,19 +1,20 @@
-/// <reference types="@sveltejs/kit" />
-
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
+// and what to do when importing types
 declare namespace App {
-    interface Locals {
-        user?: Supabase.User;
-    }
+    // interface Locals {}
+    // interface PageData {}
     // interface Platform {}
-    interface Session {
-        user?: Supabase.User;
-    }
-    interface Stuff {}
+    // interface PrivateEnv {}
+    // interface PublicEnv {}
 }
-interface AppUser {
-    supabaseUser?: Supabase.User;
+
+declare namespace Lucia {
+    interface UserData {
+        username: string,
+        discord_email: string;
+        patreon_email?: string;
+    }
 }
 interface Tag {
     id: number;
@@ -38,8 +39,8 @@ type AppUser = {
     role: Role;
     created: Date;
     avatar_url: string;
-}
+};
 type Card = {
     id: string?;
     name?: string;
-}
+};

@@ -1,45 +1,43 @@
 {
-  "name": "deckmastery",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "vite dev",
-    "build": "svelte-kit build",
-    "package": "svelte-kit package",
-    "preview": "svelte-kit preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --check --plugin-search-dir=. . && eslint .",
-    "format": "prettier --write --plugin-search-dir=. ."
-  },
-  "devDependencies": {
-    "@supabase/supabase-js": "^1.35.4",
-    "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "next",
-    "@types/cookie": "^0.5.1",
-    "@typescript-eslint/eslint-plugin": "^5.32.0",
-    "@typescript-eslint/parser": "^5.32.0",
-    "autoprefixer": "^10.4.8",
-    "carbon-components-svelte": "^0.66.3",
-    "eslint": "^8.21.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-svelte3": "^4.0.0",
-    "postcss": "^8.4.14",
-    "postcss-load-config": "^3.1.4",
-    "prettier": "^2.7.1",
-    "prettier-plugin-svelte": "^2.7.0",
-    "sass": "^1.54.0",
-    "svelte": "^3.49.0",
-    "svelte-check": "^2.8.0",
-    "svelte-preprocess": "^4.10.7",
-    "tailwindcss": "^3.1.7",
-    "tslib": "^2.4.0",
-    "typescript": "^4.7.4",
-    "vite": "^3.0.4"
-  },
-  "type": "module",
-  "dependencies": {
-    "carbon-icons-svelte": "^11.2.0",
-    "cookie": "^0.5.0",
-    "just-debounce-it": "^3.0.1"
-  }
+    "name": "deckmastery",
+    "version": "0.0.1",
+    "private": true,
+    "engines": {
+        "node": ">=16.14.0"
+    },
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite build",
+        "preview": "vite preview",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+        "lint": "prettier --check . && eslint .",
+        "format": "prettier --write ."
+    },
+    "devDependencies": {
+        "@lucia-sveltekit/adapter-supabase": "^0.3.3",
+        "@supabase/supabase-js": "^1.35.6",
+        "@sveltejs/adapter-auto": "next",
+        "@sveltejs/kit": "next",
+        "@typescript-eslint/eslint-plugin": "^5.36.2",
+        "@typescript-eslint/parser": "^5.36.2",
+        "carbon-components-svelte": "^0.70.6",
+        "carbon-icons-svelte": "^11.2.0",
+        "carbon-preprocess-svelte": "^0.9.1",
+        "chalk": "^5.0.1",
+        "eslint": "^8.23.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-svelte3": "^4.0.0",
+        "lucia-sveltekit": "^0.8.0",
+        "prettier": "^2.7.1",
+        "prettier-plugin-svelte": "^2.7.0",
+        "sass": "^1.54.8",
+        "svelte": "^3.50.0",
+        "svelte-check": "^2.9.0",
+        "svelte-preprocess": "^4.10.7",
+        "tslib": "^2.4.0",
+        "typescript": "^4.8.2",
+        "vite": "^3.1.0"
+    },
+    "type": "module"
 }
