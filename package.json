@@ -2,6 +2,9 @@
     "name": "deckmastery",
     "version": "0.0.1",
     "private": true,
+    "engines": {
+        "node": ">=16.14.0"
+    },
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
@@ -21,6 +24,7 @@
         "carbon-components-svelte": "^0.70.6",
         "carbon-icons-svelte": "^11.2.0",
         "carbon-preprocess-svelte": "^0.9.1",
+        "chalk": "^5.0.1",
         "eslint": "^8.23.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-svelte3": "^4.0.0",

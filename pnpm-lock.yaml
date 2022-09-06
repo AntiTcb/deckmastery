@@ -10,6 +10,7 @@ specifiers:
   carbon-components-svelte: ^0.70.6
   carbon-icons-svelte: ^11.2.0
   carbon-preprocess-svelte: ^0.9.1
+  chalk: ^5.0.1
   eslint: ^8.23.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
@@ -34,6 +35,7 @@ devDependencies:
   carbon-components-svelte: 0.70.6
   carbon-icons-svelte: 11.2.0
   carbon-preprocess-svelte: 0.9.1_sass@1.54.8+svelte@3.50.0
+  chalk: 5.0.1
   eslint: 8.23.0
   eslint-config-prettier: 8.5.0_eslint@8.23.0
   eslint-plugin-svelte3: 4.0.0_sc4laremvjv7grvyfrqmp3xv5q

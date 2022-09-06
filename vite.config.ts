@@ -11,6 +11,11 @@ const config: UserConfig = {
             },
         },
     },
+    build: {
+        rollupOptions: {
+            external: ['chalk']
+        }
+    }
 };
 
 export default config;
