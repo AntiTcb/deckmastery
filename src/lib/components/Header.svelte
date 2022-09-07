@@ -7,7 +7,6 @@
     import UserProfile from 'carbon-icons-svelte/lib/UserProfile.svelte';
     import UserProfileAlt from 'carbon-icons-svelte/lib/UserProfile.svelte';
 
-
     const lucia = getSession();
 
     let accountPanelIsOpen = false
@@ -24,12 +23,13 @@
     }
 </script>
 
-<Header persistentHamburgerMenu={true} platformName="Deck Mastery" bind:isSideNavOpen>
+<Header href="/" persistentHamburgerMenu={true} platformName="Deck Mastery" bind:isSideNavOpen>
   <svelte:fragment slot="skip-to-content">
     <SkipToContent />
   </svelte:fragment>
   <HeaderNav>
     <HeaderNavItem href="/combos" text="Combos" />
+    <HeaderNavItem href="/replays" text="Replays" />
   </HeaderNav>
   <HeaderUtilities>
     <HeaderAction bind:isOpen={accountPanelIsOpen} icon={UserProfile} closeIcon={UserProfileAlt}>
@@ -50,5 +50,6 @@
 <SideNav bind:isOpen={isSideNavOpen}>
   <SideNavItems>
     <SideNavLink text="Combos" href="/combos" />
+    <SideNavLink text="Replays" href="/replays" />
   </SideNavItems>
 </SideNav>
