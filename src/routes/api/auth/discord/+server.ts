@@ -2,13 +2,14 @@ import type { RequestHandler } from '@sveltejs/kit'
 import type { Error } from 'lucia-sveltekit'
 
 import { auth } from '$lucia'
-import { error } from '@sveltejs/kit'
+import { error, redirect } from '@sveltejs/kit'
 
 const clientId = import.meta.env.VITE_DISCORD_CLIENT_ID
 const clientSecret = import.meta.env.VITE_DISCORD_CLIENT_SECRET
 
-export const GET: RequestHandler = async({ url }) => {
+export const GET: RequestHandler = async({ cookies, url }) => {
     const code = url.searchParams.get(`code`);
+    const redirectTo = url.searchParams.get(`state`) || `/`;
 
     if (!code) {
         throw error(400, JSON.stringify({message: 'Invalid request URL parameters'}));
@@ -53,7 +54,7 @@ export const GET: RequestHandler = async({ url }) => {
     });
 
     if (!getUserEmailResponse.ok) {
-        console.log((await getUserEmailResponse.text()))
+        console.log(`Get Email Response`, (await getUserEmailResponse.text()))
         throw error(500, JSON.stringify({
             message: 'Failed to fetch data from Discord',
             step: 'GET_USER_EMAIL'
@@ -75,7 +76,7 @@ export const GET: RequestHandler = async({ url }) => {
                 status: 302,
                 headers: {
                     "set-cookie": authenticateUser.cookies.join(),
-                    location: "/",
+                    location: redirectTo,
                 },
             })
         }
@@ -94,13 +95,15 @@ export const GET: RequestHandler = async({ url }) => {
             user_data: {
                 discord_email: email,
                 username: username,
+                role: 'user'
             }
         });
+
         return new Response(null, {
             status: 302,
             headers: {
                 "set-cookie": createUser.cookies.join(),
-                location: "/",
+                location: redirectTo,
             },
         })
     }
