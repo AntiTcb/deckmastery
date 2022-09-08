@@ -24,7 +24,7 @@
     <title>{starter.name} Combos | Deck Mastery</title>
 </svelte:head>
 
-<h1>{starter.name}</h1>
+<h2>{starter.name}</h2>
 
 {#if showExtenderSearch}
     <CardSearchBox titleText="Extender" placeholder="Search an extender" onComboSelect={onComboSelect} />

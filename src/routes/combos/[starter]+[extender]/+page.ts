@@ -11,8 +11,6 @@ export const load: PageLoad = async ({ fetch, params }) => {
     const resp = await fetch(`/api/combos/${params.starter}+${params.extender}`);
     const data: StarterExtenderData = await resp.json();
 
-    console.log(data);
-
     if (data?.starter && data?.extender) {
         return {
             starter: data.starter,
