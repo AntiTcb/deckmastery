@@ -16,14 +16,11 @@ declare namespace Lucia {
         patreon_email?: string;
     }
 }
-interface Tag {
-    id: number;
+interface Tag extends DatabaseEntity {
     name: string;
     type: string;
 }
-interface Replay {
-    id: number;
-    created_at: Date;
+interface Replay extends DatabaseEntity {
     replay_url: string;
     title: string;
     uploaded_by: string;
@@ -31,6 +28,16 @@ interface Replay {
     starter_card_id: number;
     extender_card_id: number?;
 }
+interface ReplayVote extends DatabaseEntity  {
+    vote: number;
+    replay_id: number;
+    voter_id: number;
+}
+interface DatabaseEntity {
+    id: number;
+    created_at: Date;
+}
+
 type Role = 'Admin' | 'Editor' | 'Patron' | 'User';
 type AppUser = {
     id: string;
@@ -44,3 +51,12 @@ type Card = {
     id: string?;
     name?: string;
 };
+
+declare namespace SearchResults {
+    interface ReplaySearchResults extends Replay {
+        votes?: [{
+            vote: number;
+            voter_id: string;
+        }]
+    }
+}

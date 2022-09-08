@@ -16,7 +16,7 @@
     let { starter } = data;
 
     const onComboSelect = ({ detail: { selectedItem }}: CustomEvent) => {
-        goto(`/combos/${$page.params.starter}/${nameToRoute(selectedItem.text)}`);
+        goto(`/combos/${$page.params.starter}+${nameToRoute(selectedItem.text)}`);
     }
 </script>
 
