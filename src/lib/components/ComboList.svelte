@@ -9,8 +9,6 @@
 
     let replays : SearchResults.ReplaySearchResults[] = [];
 
-    $: console.log(replays);
-
     $: dataTableRows = replays.map(r => {
         return {
             id: r.id,
@@ -38,10 +36,11 @@
 
 <div>
     <DataTable sortable zebra stickyHeader headers={[
+        { key: "rating", value: "Rating" },
         { key: "title", value: "Name" },
         { key: "uploaded_by", value: "Uploaded By" },
         { key: "replay_url", value: "Replay" },
-        { key: "rating", value: "Rating" }]}
+        ]}
         rows={dataTableRows}>
         <svelte:fragment slot="cell" let:row let:cell>
             {#if cell.key === "replay_url"}
