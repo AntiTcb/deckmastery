@@ -1,8 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig } from 'vite';
+import { optimizeCss } from 'carbon-preprocess-svelte';
 
 const config: UserConfig = {
-    plugins: [sveltekit()],
+    plugins: [sveltekit(), process.env.NODE_ENV === 'production' && optimizeCss()],
     css: {
         preprocessorOptions: {
             scss: {
