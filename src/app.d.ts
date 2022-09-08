@@ -11,7 +11,8 @@ declare namespace App {
 
 declare namespace Lucia {
     interface UserData {
-        username: string,
+        username: string;
+        Role: Role;
         discord_email: string;
         patreon_email?: string;
     }
@@ -28,7 +29,7 @@ interface Replay extends DatabaseEntity {
     starter_card_id: number;
     extender_card_id: number?;
 }
-interface ReplayVote extends DatabaseEntity  {
+interface ReplayVote extends DatabaseEntity {
     vote: number;
     replay_id: number;
     voter_id: number;
@@ -38,15 +39,8 @@ interface DatabaseEntity {
     created_at: Date;
 }
 
-type Role = 'Admin' | 'Editor' | 'Patron' | 'User';
-type AppUser = {
-    id: string;
-    username: string;
-    email: string;
-    role: Role;
-    created: Date;
-    avatar_url: string;
-};
+type Role = 'admin' | 'editor' | 'patron' | 'user';
+
 type Card = {
     id: string?;
     name?: string;
