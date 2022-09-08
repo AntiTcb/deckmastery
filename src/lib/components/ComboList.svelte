@@ -14,7 +14,7 @@
             id: r.id,
             title: r.title,
             replay_url: r.replay_url,
-            uploaded_by: r.uploaded_by || "Unknown",
+            uploaded_by: r.uploaded_by?.username || "Unknown",
             rating: r.votes?.reduce((i, v) => i + v.vote, 0) ?? 0,
         }
     })
@@ -29,6 +29,7 @@
 
     const searchForCombos = async () => {
         replays = await searchReplays(starter, extender);
+        console.log(replays);
     }
 
     const filterRows = (row: DataTableRow, value: string | number) : boolean => row.title.toLowerCase().includes((value as string).toLowerCase());

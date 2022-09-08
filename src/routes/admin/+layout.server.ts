@@ -1,6 +1,6 @@
 import type { LayoutServerLoad } from './$types';
 
-import { error } from '@sveltejs/kit'
+import { error } from '@sveltejs/kit';
 
 export const load: LayoutServerLoad = async ({ parent }) => {
     const { lucia } = await parent();
@@ -10,4 +10,4 @@ export const load: LayoutServerLoad = async ({ parent }) => {
     }
 
     return { user: lucia.user };
-}
+};

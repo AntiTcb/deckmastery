@@ -9,11 +9,14 @@ const supabaseKey = dev
 export const searchReplays = async (starter: Card, extender: Card | null = null) => {
     let query = supabase
         .from('replays')
-        .select(`
+        .select(
+            `
             id,
             title,
             replay_url,
-            votes:replay_votes(vote, voter_id)`)
+            uploaded_by:user(username),
+            votes:replay_votes(vote, voter_id)`
+        )
         .eq('status', 'approved')
         .eq('starter_card_id', starter.id);
 
