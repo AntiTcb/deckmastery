@@ -28,15 +28,15 @@
         "eslint": "^8.23.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-svelte3": "^4.0.0",
-        "lucia-sveltekit": "^0.8.0",
+        "lucia-sveltekit": "^0.8.2",
         "prettier": "^2.7.1",
         "prettier-plugin-svelte": "^2.7.0",
-        "sass": "^1.54.8",
+        "sass": "^1.54.9",
         "svelte": "^3.50.0",
         "svelte-check": "^2.9.0",
         "svelte-preprocess": "^4.10.7",
         "tslib": "^2.4.0",
-        "typescript": "^4.8.2",
+        "typescript": "^4.8.3",
         "vite": "^3.1.0"
     },
     "type": "module"
