@@ -28,7 +28,7 @@
     }
 </script>
 
-<Header href="/" persistentHamburgerMenu={$showSideNav} platformName="Deck Mastery" bind:isSideNavOpen>
+<Header href="/" persistentHamburgerMenu={true} platformName="Deck Mastery" bind:isSideNavOpen>
   <HeaderNav>
     <HeaderNavMenu text="Combos">
         <HeaderNavItem href="/combos" text="View All Combos" />
@@ -56,17 +56,15 @@
 </HeaderUtilities>
 </Header>
 
-{#if $showSideNav}
-    <SideNav bind:isOpen={isSideNavOpen}>
-        <SideNavItems>
-        <SideNavMenu text="Combos">
-            <SideNavMenuItem href="/combos" text="View All Combos" />
-            <SideNavMenuItem href="/combos/create" text="Create a New Combo" />
-        </SideNavMenu>
-        <SideNavLink text="Replays" href="/replays" />
-        {#if $lucia?.user?.Role === 'editor' || $lucia?.user?.Role === 'admin'}
-            <SideNavLink text="Admin" href="/admin" />
-        {/if}
-        </SideNavItems>
-    </SideNav>
-{/if}
+<SideNav bind:isOpen={isSideNavOpen}>
+    <SideNavItems>
+    <SideNavMenu text="Combos">
+        <SideNavMenuItem href="/combos" text="View All Combos" />
+        <SideNavMenuItem href="/combos/create" text="Create a New Combo" />
+    </SideNavMenu>
+    <SideNavLink text="Replays" href="/replays" />
+    {#if $lucia?.user?.Role === 'editor' || $lucia?.user?.Role === 'admin'}
+        <SideNavLink text="Admin" href="/admin" />
+    {/if}
+    </SideNavItems>
+</SideNav>

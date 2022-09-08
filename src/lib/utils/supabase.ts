@@ -24,11 +24,11 @@ export const searchReplays = async (starter: Card, extender: Card | null = null)
     const { data, error } = await query;
 
     if (error) {
-        console.error(error);
+        console.error(`Supabase SearchReplays Error:`, error);
         return [];
     }
 
-    return data as ReplaySearchResults[];
+    return data as SearchResults.ReplaySearchResults[];
 };
 
 export const getReplays = async () => {
@@ -37,7 +37,7 @@ export const getReplays = async () => {
         .select(`id,created_at,replay_url,title,uploaded_by`);
 
     if (error) {
-        console.error(error);
+        console.error(`Supabase GetReplays Error:`, error);
         return [];
     }
 
@@ -51,7 +51,7 @@ export const getReplay = async (id: number) => {
         .eq(`id`, id);
 
     if (error) {
-        console.error(error);
+        console.error(`Supabase GetReplay Error:`, error);
         return null;
     }
 
