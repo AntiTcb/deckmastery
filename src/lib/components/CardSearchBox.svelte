@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { ComboBox } from 'carbon-components-svelte'
 
     let searchValue = '';
     let cardNames = [] as any[];
@@ -25,7 +24,7 @@
 </script>
 
 <div>
-    <ComboBox class="card-search-box" bind:titleText bind:placeholder {shouldFilterItem} items={cardNames} on:select={onComboSelect} bind:value={searchValue} />
+    <!-- <ComboBox class="card-search-box" bind:titleText bind:placeholder {shouldFilterItem} items={cardNames} on:select={onComboSelect} bind:value={searchValue} /> -->
 </div>
 
 <style>

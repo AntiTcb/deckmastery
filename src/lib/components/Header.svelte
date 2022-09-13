@@ -1,19 +1,11 @@
 <script lang="ts">
+    import { AppBar } from '@brainandbones/skeleton'
+
     import { signOut, getSession } from 'lucia-sveltekit/client'
-    import {
-        breakpointObserver,
-        Header, HeaderNav, HeaderNavItem, HeaderNavMenu, HeaderUtilities, HeaderAction, HeaderPanelLinks, HeaderPanelLink,
-        SideNav, SideNavMenu, SideNavMenuItem, SideNavItems, SideNavLink,
-    } from "carbon-components-svelte";
     import { page } from '$app/stores';
 
-    import UserProfile from 'carbon-icons-svelte/lib/UserProfile.svelte';
-    import UserProfileAlt from 'carbon-icons-svelte/lib/UserProfile.svelte';
-
     const lucia = getSession();
-    let size = breakpointObserver();
 
-    let showSideNav = size.smallerThan("lg");
     let accountPanelIsOpen = false
     let isSideNavOpen = false;
 
@@ -28,7 +20,14 @@
     }
 </script>
 
-<Header href="/" persistentHamburgerMenu={true} platformName="Deck Mastery" bind:isSideNavOpen>
+<AppBar>
+    <svelte:fragment slot="lead">Deck Mastery</svelte:fragment>
+    <svelte:fragment slot="trail">
+        <a href="/combos">Combos</a>
+    </svelte:fragment>
+</AppBar>
+
+<!-- <Header href="/" persistentHamburgerMenu={true} platformName="Deck Mastery" bind:isSideNavOpen>
   <HeaderNav>
     <HeaderNavMenu text="Combos">
         <HeaderNavItem href="/combos" text="View All Combos" />
@@ -67,4 +66,4 @@
         <SideNavLink text="Admin" href="/admin" />
     {/if}
     </SideNavItems>
-</SideNav>
+</SideNav> -->

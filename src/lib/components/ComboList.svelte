@@ -1,8 +1,5 @@
 <script lang="ts">
-    import type { DataTableRow } from 'carbon-components-svelte/types/DataTable/DataTable.svelte';
     import { searchReplays } from '$supabase'
-
-    import { DataTable, Link, Toolbar, ToolbarContent, ToolbarSearch } from 'carbon-components-svelte'
 
     export let starter: Card;
     export let extender: Card | null = null;
@@ -32,11 +29,11 @@
         console.log(replays);
     }
 
-    const filterRows = (row: DataTableRow, value: string | number) : boolean => row.title.toLowerCase().includes((value as string).toLowerCase());
+    // const filterRows = (row: DataTableRow, value: string | number) : boolean => row.title.toLowerCase().includes((value as string).toLowerCase());
 </script>
 
 <div>
-    <DataTable sortable zebra stickyHeader headers={[
+    <!-- <DataTable sortable zebra stickyHeader headers={[
         { key: "rating", value: "Rating" },
         { key: "title", value: "Name" },
         { key: "uploaded_by", value: "Uploaded By" },
@@ -55,7 +52,7 @@
                 <ToolbarSearch persistent shouldFilterRows={filterRows} bind:value={search}  />
             </ToolbarContent>
         </Toolbar>
-    </DataTable>
+    </DataTable> -->
 </div>
 
 <style>
