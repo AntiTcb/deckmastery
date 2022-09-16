@@ -1,29 +1,43 @@
 <script lang="ts">
-    import { AppBar } from '@brainandbones/skeleton'
+    import { AppBar, Button, Card, List, ListItem, Logo, Menu } from '@brainandbones/skeleton'
 
     import { signOut, getSession } from 'lucia-sveltekit/client'
     import { page } from '$app/stores';
 
     const lucia = getSession();
 
-    let accountPanelIsOpen = false
-    let isSideNavOpen = false;
+    $: console.log($lucia)
 
     const signOutUser = async () => {
         try {
-            await signOut($lucia!.access_token);
-            window.location.href = $page.url.pathname;
-        }
-        catch {
-            console.log('Error signing out')
+            await signOut();
+            window.location.href = "/";
+        } catch (e) {
+            console.error(e);
+            // handle error
         }
     }
 </script>
 
 <AppBar>
-    <svelte:fragment slot="lead">Deck Mastery</svelte:fragment>
+    <svelte:fragment slot="lead"><a href="/">Deck Mastery</a></svelte:fragment>
     <svelte:fragment slot="trail">
         <a href="/combos">Combos</a>
+        {#if $lucia}
+            <Menu select={false} open={false} origin="tr">
+                <Button class="bg-transparent" slot="trigger" type="button">Hi {$lucia.user.username}</Button>
+                <Card slot="content">
+                    <List tag="nav">
+                        <ListItem href="/profile">Profile</ListItem>
+                        <ListItem href="/settings">Settings</ListItem>
+                        <ListItem on:click={() => signOutUser()}>Logout</ListItem>
+                        <ListItem href="/logout">Redirect to Logout</ListItem>
+                    </List>
+                </Card>
+            </Menu>
+        {:else}
+            <a href="/login">Login</a>
+        {/if}
     </svelte:fragment>
 </AppBar>
 

@@ -2,12 +2,13 @@ import type { RequestHandler } from '@sveltejs/kit';
 import type { Error } from 'lucia-sveltekit';
 
 import { auth } from '$lucia';
+import { setCookie } from 'lucia-sveltekit';
 import { error, redirect } from '@sveltejs/kit';
 
 const clientId = import.meta.env.VITE_DISCORD_CLIENT_ID;
 const clientSecret = import.meta.env.VITE_DISCORD_CLIENT_SECRET;
 
-export const GET: RequestHandler = async ({ cookies, url }) => {
+export const GET: RequestHandler = async ({ setHeaders, cookies, url }) => {
     const code = url.searchParams.get(`code`);
     const redirectTo = url.searchParams.get(`state`) || `/`;
 
@@ -76,16 +77,11 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 
     if (user) {
         try {
-            const authenticateUser = await auth.authenticateUser(`discord`, email, '');
+            const authenticateUser = await auth.authenticateUser(`discord`, email);
 
-            return new Response(null, {
-                status: 302,
-                headers: {
-                    'set-cookie': authenticateUser.cookies.join(),
-                    location: redirectTo,
-                },
-            });
+            setCookie(cookies, ...authenticateUser.cookies);
         } catch (e) {
+            console.error(e);
             throw error(
                 500,
                 JSON.stringify({
@@ -95,6 +91,8 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
                 })
             );
         }
+
+        throw redirect(302, redirectTo);
     }
 
     try {

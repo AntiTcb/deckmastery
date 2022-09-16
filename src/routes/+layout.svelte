@@ -9,13 +9,13 @@
     import Footer from '$components/Footer.svelte';
 
     import { AppShell } from '@brainandbones/skeleton'
-    import { Lucia } from 'lucia-sveltekit/client';
+    import { handleSilentRefresh } from 'lucia-sveltekit/client';
+
+    handleSilentRefresh();
 </script>
 
-<Lucia>
-    <AppShell>
-        <svelte:fragment slot="header"><Header /></svelte:fragment>
-        <svelte:fragment slot="pageFooter"><Footer /></svelte:fragment>
-        <div class="px-5"><slot /></div>
-    </AppShell>
-</Lucia>
+<AppShell>
+    <svelte:fragment slot="header"><Header /></svelte:fragment>
+    <svelte:fragment slot="pageFooter"><Footer /></svelte:fragment>
+    <div class="px-5"><slot /></div>
+</AppShell>
