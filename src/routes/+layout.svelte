@@ -6,13 +6,13 @@
     import Footer from '$components/Footer.svelte'
 
     import { Content } from 'carbon-components-svelte'
-    import { Lucia } from 'lucia-sveltekit/client'
+    import { handleSilentRefresh } from 'lucia-sveltekit/client'
+
+    handleSilentRefresh();
 </script>
 
-<Lucia>
-    <Header />
-    <Content>
-        <slot />
-    </Content>
-    <Footer />
-</Lucia>
+<Header />
+<Content>
+    <slot />
+</Content>
+<Footer />

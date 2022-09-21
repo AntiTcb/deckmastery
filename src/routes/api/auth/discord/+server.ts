@@ -2,6 +2,7 @@ import type { RequestHandler } from '@sveltejs/kit';
 import type { Error } from 'lucia-sveltekit';
 
 import { auth } from '$lucia';
+import { setCookie } from 'lucia-sveltekit';
 import { error, redirect } from '@sveltejs/kit';
 
 const clientId = import.meta.env.VITE_DISCORD_CLIENT_ID;
@@ -30,8 +31,8 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
     });
 
     if (!getAccessTokenResponse.ok) {
-        console.log('Response:', await getAccessTokenResponse.text());
-        console.log('Request Body:', {
+        console.error('Response:', await getAccessTokenResponse.text());
+        console.error('Request Body:', {
             grant_type: 'authorization_code',
             code,
             client_id: clientId,
@@ -57,7 +58,7 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
     });
 
     if (!getUserEmailResponse.ok) {
-        console.log(`Get Email Response`, await getUserEmailResponse.text());
+        console.error(`Get Email Response`, await getUserEmailResponse.text());
         throw error(
             500,
             JSON.stringify({
@@ -76,15 +77,8 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 
     if (user) {
         try {
-            const authenticateUser = await auth.authenticateUser(`discord`, email, '');
-
-            return new Response(null, {
-                status: 302,
-                headers: {
-                    'set-cookie': authenticateUser.cookies.join(),
-                    location: redirectTo,
-                },
-            });
+            const authenticateUser = await auth.authenticateUser(`discord`, email);
+            setCookie(cookies, ...authenticateUser.cookies);
         } catch (e) {
             throw error(
                 500,
@@ -95,6 +89,8 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
                 })
             );
         }
+
+        throw redirect(302, redirectTo);
     }
 
     try {
@@ -106,14 +102,7 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
                 role: 'user',
             },
         });
-
-        return new Response(null, {
-            status: 302,
-            headers: {
-                'set-cookie': createUser.cookies.join(),
-                location: redirectTo,
-            },
-        });
+        setCookie(cookies, ...createUser.cookies);
     } catch (e) {
         const luciaError = e as Error;
 
@@ -130,4 +119,5 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
             })
         );
     }
+    throw redirect(302, redirectTo);
 };

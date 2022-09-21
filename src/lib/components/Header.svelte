@@ -19,7 +19,7 @@
 
     const signOutUser = async () => {
         try {
-            await signOut($lucia!.access_token);
+            await signOut();
             window.location.href = $page.url.pathname;
         }
         catch {
