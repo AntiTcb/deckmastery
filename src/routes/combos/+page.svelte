@@ -4,8 +4,8 @@
 
     import CardSearchBox from '$components/CardSearchBox.svelte'
 
-    const onComboSelect = ({ detail: { selectedItem } }: CustomEvent) => {
-        goto(`/combos/${nameToRoute(selectedItem.text)}`);
+    const onComboSelect = async ({ detail: { selectedItem } }: CustomEvent) => {
+        await goto(`/combos/${nameToRoute(selectedItem.text)}`);
     }
 </script>
 

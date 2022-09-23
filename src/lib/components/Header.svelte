@@ -68,3 +68,13 @@
     {/if}
     </SideNavItems>
 </SideNav>
+
+
+<style>
+    :global(.bx--header a) {
+        text-decoration: none !important;
+    }
+    :global(.bx--header__action svg) {
+        display: inline;
+    }
+</style>

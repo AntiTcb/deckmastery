@@ -8,8 +8,6 @@
 
 <style>
     div {
-        position: fixed;
-        bottom: 0;
         padding: 0.5rem 1rem 0.25rem 1rem;
         font-size: 10pt;
         text-align: center;

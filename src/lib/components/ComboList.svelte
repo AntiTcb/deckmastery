@@ -3,6 +3,7 @@
     import { searchReplays } from '$supabase'
 
     import { DataTable, Link, Toolbar, ToolbarContent, ToolbarSearch } from 'carbon-components-svelte'
+    import { DataTable as SkeletonDataTable } from '@brainandbones/skeleton';
 
     export let starter: Card;
     export let extender: Card | null = null;
@@ -16,6 +17,15 @@
             replay_url: r.replay_url,
             uploaded_by: r.uploaded_by?.username || "Unknown",
             rating: r.votes?.reduce((i, v) => i + v.vote, 0) ?? 0,
+        }
+    })
+
+    $: skeletonTableRows = replays.map(r => {
+        return {
+            rating: r.votes?.reduce((i, v) => i + v.vote, 0) ?? 0,
+            name: r.title,
+            uploaded_by: r.uploaded_by?.username || "Unknown",
+            url: r.replay_url,
         }
     })
 
@@ -33,6 +43,33 @@
     }
 
     const filterRows = (row: DataTableRow, value: string | number) : boolean => row.title.toLowerCase().includes((value as string).toLowerCase());
+
+    const tableServer: any = {
+        search: undefined,
+        sort: undefined,
+        headings: ['Title', 'Replay', 'Uploaded By', 'Rating'],
+        count: 0
+    };
+
+    const getTableSource: any = async () => {
+        const replays = await searchReplays(starter, extender);
+
+        if (replays.length === 0) return;
+
+        tableServer.sort = 'name';
+
+        const mappedReplays = replays.map(r => {
+            return {
+                title: r.title,
+                replay_url: r.replay_url,
+                uploaded_by: r.uploaded_by?.username || "Unknown",
+                rating: r.votes?.reduce((i, v) => i + v.vote, 0) ?? 0,
+            }
+        });
+
+        return mappedReplays;
+    }
+    let tablePromise: Promise<any> = getTableSource();
 </script>
 
 <div>
@@ -56,6 +93,20 @@
             </ToolbarContent>
         </Toolbar>
     </DataTable>
+
+    {#await tablePromise}
+        <p>Loading...</p>
+    {:then promisedReplays}
+        <SkeletonDataTable
+            headings={tableServer.headings}
+            search={tableServer.search}
+            sort={tableServer.sort}
+            bind:count={tableServer.count}
+            source={promisedReplays}
+            interactive>
+        </SkeletonDataTable>
+    {/await}
+
 </div>
 
 <style>

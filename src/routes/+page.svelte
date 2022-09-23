@@ -11,13 +11,13 @@
 <Grid fullWidth class="main-page-grid">
     <Row>
         <Column class="grid-col">
-            <ClickableTile href="/combos">
+            <ClickableTile href="/combos" class="rounded-3xl">
                 <h3>Combos by Card</h3>
                 <h4>Search for a card you'd like to see combos for</h4>
             </ClickableTile>
         </Column>
         <Column class="grid-col">
-            <ClickableTile href="/replays">
+            <ClickableTile href="/replays" class="rounded-3xl">
                 <h3>Replays</h3>
                 <h4>Or look through all of our DuelingBook replays</h4>
             </ClickableTile>
@@ -28,8 +28,8 @@
 
 
 <style>
-    h1, h2, h3 , h4{
-        margin: 0 auto;
+    h1, h2, h3 , h4 {
+        margin: 1rem auto;
         text-align: center;
     }
 

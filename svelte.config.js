@@ -8,9 +8,7 @@ const config = {
     // for more information about preprocessors
     preprocess: [
         preprocess({
-            scss: {
-                prependData: '@use "src/variables.scss" as *;',
-            },
+            postcss: true,
         }),
         optimizeImports(),
     ],
