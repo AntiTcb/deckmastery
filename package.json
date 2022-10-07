@@ -15,29 +15,33 @@
         "format": "prettier --write ."
     },
     "devDependencies": {
+        "@brainandbones/skeleton": "^0.50.6",
+        "@iconify/svelte": "^3.0.0",
         "@lucia-sveltekit/adapter-supabase": "^0.3.3",
         "@supabase/supabase-js": "^1.35.7",
         "@sveltejs/adapter-auto": "next",
         "@sveltejs/kit": "next",
+        "@tailwindcss/forms": "^0.5.2",
+        "@tailwindcss/typography": "^0.5.3",
         "@typescript-eslint/eslint-plugin": "^5.39.0",
         "@typescript-eslint/parser": "^5.39.0",
-        "carbon-components-svelte": "^0.70.10",
-        "carbon-icons-svelte": "^11.3.0",
-        "carbon-preprocess-svelte": "^0.9.1",
-        "chalk": "^5.0.1",
+        "autoprefixer": "^10.4.7",
         "eslint": "^8.24.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-svelte3": "^4.0.0",
         "lucia-sveltekit": "^0.8.9",
+        "postcss": "^8.4.14",
+        "postcss-load-config": "^4.0.1",
         "prettier": "^2.7.1",
         "prettier-plugin-svelte": "^2.7.1",
         "sass": "^1.55.0",
         "svelte": "^3.50.1",
         "svelte-check": "^2.9.1",
         "svelte-preprocess": "^4.10.7",
+        "tailwindcss": "^3.1.5",
         "tslib": "^2.4.0",
         "typescript": "^4.8.4",
-        "vite": "^3.1.4"
+        "vite": "^3.1.6"
     },
     "type": "module"
 }

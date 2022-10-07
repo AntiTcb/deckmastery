@@ -1,19 +1,10 @@
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
-import { optimizeImports } from 'carbon-preprocess-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
     // Consult https://github.com/sveltejs/svelte-preprocess
     // for more information about preprocessors
-    preprocess: [
-        preprocess({
-            scss: {
-                prependData: '@use "src/variables.scss" as *;',
-            },
-        }),
-        optimizeImports(),
-    ],
     kit: {
         adapter: adapter(),
         alias: {
@@ -24,6 +15,12 @@ const config = {
             $lucia: 'src/lib/utils/lucia.ts',
         },
     },
+
+    preprocess: [
+        preprocess({
+            postcss: true,
+        }),
+    ],
 };
 
 export default config;

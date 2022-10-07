@@ -1,17 +1,15 @@
-import type { RequestHandler } from "@sveltejs/kit";
+import type { RequestHandler } from '@sveltejs/kit';
 
-import { signOut} from "lucia-sveltekit/client";
-import { redirect } from "@sveltejs/kit";
+import { signOut } from 'lucia-sveltekit/client';
+import { redirect } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async () => {
     try {
         await signOut();
-    }
-    catch (e) {
+    } catch (e) {
         console.error(e);
         console.log('Error signing out');
+    } finally {
+        throw redirect(302, '/');
     }
-    finally {
-        throw redirect(302, "/");
-    }
-}
+};

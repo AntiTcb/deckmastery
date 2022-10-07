@@ -44,7 +44,8 @@ type Role = 'admin' | 'editor' | 'patron' | 'user';
 
 type Card = {
     id: string?;
-    name?: string;
+    name: string;
+    image?: string;
 };
 
 type User = DatabaseEntity & UserData;
