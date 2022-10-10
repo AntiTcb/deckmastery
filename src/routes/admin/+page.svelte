@@ -1,8 +1,6 @@
 <script lang="ts">
     import type { PageData } from './$types';
 
-    import { Tabs, Tab, TabContent } from 'carbon-components-svelte';
-
     export let data : PageData;
     let { user } = data;
 
@@ -11,7 +9,7 @@
 <div>
     <h2>Admin Control Panel</h2>
 
-    <Tabs>
+    <!-- <Tabs>
         {#if user.Role === 'editor' || user.Role === 'admin'}
             <Tab label="Manage Combos" />
         {/if}
@@ -46,7 +44,7 @@
                 </TabContent>
             {/if}
         </svelte:fragment>
-    </Tabs>
+    </Tabs> -->
 
 
 </div>
