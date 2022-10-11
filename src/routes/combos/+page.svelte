@@ -4,11 +4,11 @@
 
     import CardSearchBox from '$components/CardSearchBox.svelte'
 
-    const onComboSelect = ({ detail: { selectedItem } }: CustomEvent) => {
-        goto(`/combos/${nameToRoute(selectedItem.name)}`);
+    const onSelectRow = ({ detail: { name } }: CustomEvent) => {
+        goto(`/combos/${nameToRoute(name)}`);
     }
 </script>
 
 <svelte:head><title>Combos | Deck Mastery</title></svelte:head>
 
-<CardSearchBox titleText="Let's start off your combo!" placeholder="Search for a starter card" onComboSelect={onComboSelect} />
+<CardSearchBox titleText="Let's start off your combo!" placeholder="Search for a starter card" onSelectRow={onSelectRow} />

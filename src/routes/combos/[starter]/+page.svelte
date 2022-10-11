@@ -12,8 +12,8 @@
     export let data : PageData;
     let { starter } = data;
 
-    const onComboSelect = ({ detail: { selectedItem }}: CustomEvent) => {
-        goto(`/combos/${$page.params.starter}+${nameToRoute(selectedItem.text)}`);
+    const onComboSelect = ({ detail: { name }}: CustomEvent) => {
+        goto(`/combos/${$page.params.starter}+${nameToRoute(name)}`);
     }
 </script>
 
@@ -24,15 +24,9 @@
 <h2>{starter.name}</h2>
 
 {#if showExtenderSearch}
-    <CardSearchBox titleText="Extender" placeholder="Search an extender" onComboSelect={onComboSelect} />
+    <CardSearchBox titleText="Extender" placeholder="Search an extender" onSelectRow={onComboSelect} />
 {:else}
-    <!-- <Button class="extender-btn" icon={Add} size="small" on:click={() => showExtenderSearch = !showExtenderSearch}>Add a card to combo</Button> -->
+    <button class="btn bg-ternary-500 btn-base ring-2 ring-primary-500 ring-inset text-white rounded-lg" on:click={() => showExtenderSearch = !showExtenderSearch}>Add a card to combo</button>
 {/if}
 
 <ComboList starter={starter} />
-
-<style>
-    :global(.extender-btn) {
-        margin-top: 1rem;
-    }
-</style>

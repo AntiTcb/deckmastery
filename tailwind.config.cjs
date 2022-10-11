@@ -11,7 +11,11 @@ const config = {
     darkMode: 'class',
 
     theme: {
-        extend: {},
+        extend: {
+            aspectRatio: {
+                'yugioh-card': '3 / 4'
+            }
+        },
     },
 
     plugins: [forms, typography, skeleton],
