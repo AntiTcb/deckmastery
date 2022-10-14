@@ -10,12 +10,13 @@ declare namespace App {
     // interface PublicEnv {}
 }
 
+/// <reference types="lucia-sveltekit" />
 declare namespace Lucia {
     interface UserData {
         username: string;
-        Role?: Role;
-        discord_email?: string;
-        patreon_email?: string;
+        role?: Role;
+        discordEmail?: string;
+        patreonEmail?: string;
     }
 }
 interface Tag extends DatabaseEntity {

@@ -2,10 +2,10 @@
     import { Divider, menu } from '@brainandbones/skeleton';
     import Icon from '@iconify/svelte';
 
-    import { signOut, getSession } from 'lucia-sveltekit/client'
+    import { signOut, getUser } from 'lucia-sveltekit/client'
     import { page } from '$app/stores';
 
-    const lucia = getSession();
+    const user = getUser();
 
     const signOutUser = async () => {
         try {
@@ -32,9 +32,9 @@
 
 <Divider class="hidden sm:block" vertical={true} borderWidth="border-l-2" borderStyle="border-solid" borderColor="border-accent-500" />
 
-{#if $lucia}
+{#if user}
     <span class="relative">
-        <button class="btn btn-ghost" use:menu={{ menu: 'account' }}>Hi {$lucia.user.username}!</button>
+        <button class="btn btn-ghost" use:menu={{ menu: 'account' }}>Hi {user.username}!</button>
         <nav class="list-nav card p-4 shadow-xl" data-menu="account">
             <ul>
                 <li><a href="/@me">Profile</a></li>

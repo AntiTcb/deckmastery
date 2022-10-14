@@ -8,7 +8,6 @@
     import SiteNav from '$components/SiteNav.svelte';
 
     import { AppBar, AppShell, Divider, GradientHeading } from '@brainandbones/skeleton';
-    import { handleSilentRefresh } from 'lucia-sveltekit/client';
     import { storeCurrentUrl } from '$lib/stores/site';
     import { page } from '$app/stores';
     import { afterNavigate } from '$app/navigation';
@@ -22,8 +21,6 @@
             elemPage.scrollTop = 0;
         }
     })
-
-    handleSilentRefresh();
 </script>
 
 <svelte:head>
