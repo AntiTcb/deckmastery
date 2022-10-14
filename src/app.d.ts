@@ -37,7 +37,7 @@ interface ReplayVote extends DatabaseEntity {
     voter_id: number;
 }
 interface DatabaseEntity {
-    id?: number;
+    id?: number | string;
     created_at?: Date;
 }
 

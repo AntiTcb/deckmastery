@@ -35,7 +35,11 @@
         on:selected={onSelectRow}>
         <svelte:fragment slot="header">
             <input type="search" placeholder={placeholder} bind:value={searchValue} use:debounce={{ delay: 250, callback: (value) => lookupCards(value)}}></svelte:fragment>
-        <svelte:fragment slot="footer">{0} Posts</svelte:fragment>
+        <svelte:fragment slot="footer">
+            {#if cardNames.length && cardNames[0].name}
+                {cardNames.length} Combos
+            {/if}
+        </svelte:fragment>
     </DataTable>
 </section>
 

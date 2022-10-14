@@ -1,62 +1,38 @@
 <script lang="ts">
+    import { DataTable } from '@brainandbones/skeleton';
     import { searchReplays } from '$supabase'
+    import { onMount } from 'svelte';
 
     export let starter: Card;
     export let extender: Card | null = null;
 
-    let replays : SearchResults.ReplaySearchResults[] = [];
+    let replays : any[] = [{}];
+    const searchForCombos: any = async () => {
+        if (!starter) {
+            replays = [{}];
+            return;
+        }
+        const tempReplays = await searchReplays(starter, extender);
 
-    $: dataTableRows = replays.map(r => {
-        return {
-            id: r.id,
+        console.log(tempReplays)
+
+        replays = tempReplays.map(r => { return {
             title: r.title,
-            replay_url: r.replay_url,
-            uploaded_by: r.uploaded_by?.username || "Unknown",
-            rating: r.votes?.reduce((i, v) => i + v.vote, 0) ?? 0,
-        }
-    })
-
-    let search = '';
-
-    $: {
-        if (starter) {
-            searchForCombos();
-        }
+            uploadedBy: r.uploaded_by || 'Unknown',
+            replay: `<a href="${r.replay_url}" target="_blank">View</a>`,
+            rating: r.votes?.reduce((i, v) => i + v.vote, 0) || 0,
+        }});
     }
 
-    const searchForCombos = async () => {
-        replays = await searchReplays(starter, extender);
-        console.log(replays);
-    }
-
-    // const filterRows = (row: DataTableRow, value: string | number) : boolean => row.title.toLowerCase().includes((value as string).toLowerCase());
+    onMount(() => {
+        searchForCombos();
+    });
 </script>
 
-<div>
-    <!-- <DataTable sortable zebra stickyHeader headers={[
-        { key: "rating", value: "Rating" },
-        { key: "title", value: "Name" },
-        { key: "uploaded_by", value: "Uploaded By" },
-        { key: "replay_url", value: "Replay" },
-        ]}
-        rows={dataTableRows}>
-        <svelte:fragment slot="cell" let:row let:cell>
-            {#if cell.key === "replay_url"}
-                <Link href={cell.value} target="_blank">View DB Replay</Link>
-            {:else}
-                {cell.value}
-            {/if}
-        </svelte:fragment>
-        <Toolbar>
-            <ToolbarContent>
-                <ToolbarSearch persistent shouldFilterRows={filterRows} bind:value={search}  />
-            </ToolbarContent>
-        </Toolbar>
-    </DataTable> -->
-</div>
-
-<style>
-    div {
-        margin: 1rem 0;
-    }
-</style>
+<section class="my-5">
+    <DataTable
+        headings={['Title', 'Uploaded By', 'Replay', 'Rating']}
+        source={replays}
+        interactive>
+    </DataTable>
+</section>

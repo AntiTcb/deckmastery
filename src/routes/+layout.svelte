@@ -13,6 +13,7 @@
     import { afterNavigate } from '$app/navigation';
 
     afterNavigate((params: any) => {
+        console.log($page.url.pathname)
         storeCurrentUrl.set($page.url.pathname);
 
         const isNewPage: boolean = params.from && params.to && params.from.routeId !== params.to.routeId;
@@ -27,7 +28,7 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.0/iconify-icon.min.js"></script>
 </svelte:head>
 
-<AppShell slotPageContent="pr-3" slotPageFooter="bg-surface-800 py-2 px-1">
+<AppShell slotPageContent="pr-3 my-5" slotPageFooter="bg-surface-800 py-2 px-1">
     <svelte:fragment slot="header">
         <AppBar>
             <svelte:fragment slot="lead">

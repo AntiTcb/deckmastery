@@ -60,6 +60,20 @@ export const getReplay = async (id: number) => {
 
     return data[0] as Replay;
 };
+
+export const getUserReplays = async (id: string) => {
+    const { data, error } = await supabase
+    .from('replays')
+    .select(`id,created_at,replay_url,title`)
+    .eq('uploaded_by', id);
+
+    if (error) {
+        console.error(`Supabase GetUserReplays Error:`, error);
+        return [];
+    }
+
+    return data as Replay[];
+}
 // export const searchReplays = async (titleName: string, tagName: string = '', tagIds: number[] = []) => {
 //     const { data, error } = await supabase.from(`replays`).select(`id,created_at,replay_url,title,uploaded_by,tags(name)`).ilike('title', `%${titleName}%`);
 
