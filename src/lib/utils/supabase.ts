@@ -6,17 +6,15 @@ const supabaseKey = dev
     ? import.meta.env.VITE_SUPABASE_PRIVATE_KEY
     : import.meta.env.VITE_SUPABASE_PUBLIC_KEY;
 
-export const searchReplays = async (starter: Card, extender: Card | null = null) => {
+export const searchCombos = async (starter: Card, extender: Card | null = null) => {
     let query = supabase
-        .from('replays')
-        .select(
-            `
+        .from('combos')
+        .select(`
             id,
             title,
             replay_url,
             uploaded_by:user(username),
-            votes:replay_votes(vote, voter_id)`
-        )
+            likes:likes(liked_by))`)
         .eq('status', 'approved')
         .eq('starter_card_id', starter.id);
 
@@ -27,30 +25,30 @@ export const searchReplays = async (starter: Card, extender: Card | null = null)
     const { data, error } = await query;
 
     if (error) {
-        console.error(`Supabase SearchReplays Error:`, error);
+        console.error(`Supabase SearchCombos Error:`, error);
         return [];
     }
 
     return data as SearchResults.ReplaySearchResults[];
 };
 
-export const getReplays = async () => {
+export const getCombos = async () => {
     const { data, error } = await supabase
-        .from(`replays`)
-        .select(`id,created_at,replay_url,title,uploaded_by`);
+        .from(`combos`)
+        .select(`id,created_at,replay_url,title,description,uploaded_by`);
 
     if (error) {
         console.error(`Supabase GetReplays Error:`, error);
         return [];
     }
 
-    return data as Replay[];
+    return data as Combo[];
 };
 
-export const getReplay = async (id: number) => {
+export const getCombo = async (id: number) => {
     const { data, error } = await supabase
-        .from(`replays`)
-        .select(`id,created_at,replay_url,title,uploaded_by`)
+        .from(`combos`)
+        .select(`id,created_at,replay_url,title,description,uploaded_by`)
         .eq(`id`, id);
 
     if (error) {
@@ -58,13 +56,13 @@ export const getReplay = async (id: number) => {
         return null;
     }
 
-    return data[0] as Replay;
+    return data[0] as Combo;
 };
 
-export const getUserReplays = async (id: string) => {
+export const getUserCombos = async (id: string) => {
     const { data, error } = await supabase
-    .from('replays')
-    .select(`id,created_at,replay_url,title`)
+    .from('combos')
+    .select(`id,created_at,replay_url,title,description`)
     .eq('uploaded_by', id);
 
     if (error) {
@@ -72,22 +70,20 @@ export const getUserReplays = async (id: string) => {
         return [];
     }
 
-    return data as Replay[];
+    return data as Combo[];
 }
-// export const searchReplays = async (titleName: string, tagName: string = '', tagIds: number[] = []) => {
-//     const { data, error } = await supabase.from(`replays`).select(`id,created_at,replay_url,title,uploaded_by,tags(name)`).ilike('title', `%${titleName}%`);
+export const getUserById = async (userId: string) => {
+    const { data, error } = await supabase
+        .from('user')
+        .select(`id,created_at,username,role,provider_id,discord_email,patreon_email`)
+        .eq('id', userId);
 
-//     if (error) {
-//         console.error(error);
-//         return [];
-//     }
+    if (error) {
+        console.error(`Supabase GetUserById Error:`, error);
+        return null;
+    }
 
-//     return data as Replay[];
-// }
-
-// export const voteSubscription = () => supabase.from('replay_votes')
-// .on('*', p => {
-//     console.log('Vote changed:', p);
-// }).subscribe();
+    return data[0] as Lucia.UserAttributes;
+}
 
 export const supabase = createClient(supabaseUrl, supabaseKey);

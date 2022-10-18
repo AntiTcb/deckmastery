@@ -11,9 +11,11 @@
             fetch(`/api/cards?name=${searchValue}`)
             .then(res => res.json())
             .then((data : Card[]) => {
-                cardNames = data.map(c => { return {
+                cardNames = data
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(c => { return {
                     name: c.name,
-                    tableHtml: `<img src="${c.image}" alt="${c.name}" class="aspect-yugioh-card h-40" /> ${c.name}`
+                    tableHtml: `<span class="inline-flex place-items-center gap-5"><img src="${c.image}" alt="${c.name}" class="aspect-yugioh-card h-28" /> <p>${c.name}</p></span>`
                 }})
             });
         } else {
@@ -37,7 +39,7 @@
             <input type="search" placeholder={placeholder} bind:value={searchValue} use:debounce={{ delay: 250, callback: (value) => lookupCards(value)}}></svelte:fragment>
         <svelte:fragment slot="footer">
             {#if cardNames.length && cardNames[0].name}
-                {cardNames.length} Combos
+                {cardNames.length} {cardNames.length === 1 ? "Combo" : "Combos"}
             {/if}
         </svelte:fragment>
     </DataTable>
@@ -49,8 +51,7 @@
     }
 
     /* TODO: this is a hack to hide columns I dont want shown, but data to exist for events */
-    :global(.card-search-box thead th:first-child),
-    :global(.card-search-box tbody td:first-child) {
+    :global(.card-search-box :is(thead, tbody) :is(th, td):first-child) {
         display: none;
     }
 </style>

@@ -37,8 +37,8 @@
         <button class="btn btn-ghost" use:menu={{ menu: 'account' }}>Hi {user.username}!</button>
         <nav class="list-nav card p-4 shadow-xl" data-menu="account">
             <ul>
-                <li><a href="/@me">Profile</a></li>
-                <li><a href="/@me/combos">My Combos</a></li>
+                <li><a href="/users/@me">Profile</a></li>
+                <li><a href="/users/@me/combos">My Combos</a></li>
                 <li><button class="option w-full" on:click={signOutUser}>Log Out</button></li>
             </ul>
         </nav>

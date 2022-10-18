@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
 import { auth } from '$lucia';
-import { LuciaError, setCookie } from 'lucia-sveltekit';
+import { LuciaError} from 'lucia-sveltekit';
 import { error as skError, redirect } from '@sveltejs/kit';
 import { getDiscordAccessToken, getDiscordInfo } from './discordApi';
 
@@ -25,9 +25,10 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 
     const { username, email } = discordInfo;
 
-    let user: User;
+    let user: Lucia.UserAttributes | null;
     try {
         user = await auth.getUserByProviderId(`discord`, email);
+        console.debug(`User found:`, user);
     }
     catch (e) {
         if (e instanceof LuciaError) {
@@ -39,23 +40,25 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 
     if (!user) {
         user = await auth.createUser(`discord`, email, {
-            userData: {
-                discordEmail: email,
+            attributes: {
+                discord_email: email,
                 username: username,
                 role: 'user',
             },
         });
+        console.debug(`User created:`, user);
     }
 
     try {
-        const { tokens } = await auth.createSession(user.userId);
-        setCookie(cookies, ...tokens.cookies);
+        const { setSessionCookie } = await auth.createSession(user.id as string);
+        console.debug(`Session created:`, setSessionCookie);
+        setSessionCookie(cookies);
     } catch (e) {
         throw skError(
             500,
             JSON.stringify({
                 message: 'An unknown error occurred',
-                error: e,
+                error: JSON.stringify(e),
                 step: 'AUTHENTICATE_USER',
             })
         );

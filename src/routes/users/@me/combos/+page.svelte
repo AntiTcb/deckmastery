@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getUserReplays } from '$supabase';
+    import { getUserCombos } from '$supabase';
     import { getUser } from 'lucia-sveltekit/client'
 
     import { DataTable } from '@brainandbones/skeleton'
@@ -7,7 +7,7 @@
     const user: User = getUser();
 </script>
 
-{#await getUserReplays(user.userId) }
+{#await getUserCombos(user.userId) }
     <p class="text-center">Loading...</p>
 {:then replays}
     <DataTable

@@ -22,16 +22,16 @@
                     </span>
                 </a>
             </li>
-            <li on:click={onListItemClick}>
+            <!-- <li on:click={onListItemClick}>
                 <a href="/replays" value="/replays" class={classesActive("/replays")}>
                     <span class="flex-auto">
                         Replays
                     </span>
                 </a>
-            </li>
+            </li> -->
             <Divider borderWidth="border-1" borderColor="border-accent-500" borderStyle="border-solid" />
             <li on:click={onListItemClick}>
-                <a href="/@me" value="/@me" class={classesActive("/@me")}>
+                <a href="/users/@me" value="/users/@me" class={classesActive("/users/@me")}>
                     <span class="flex-auto">
                         Profile
                     </span>

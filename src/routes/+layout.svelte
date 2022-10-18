@@ -45,7 +45,9 @@
         <SiteNav />
     </svelte:fragment>
     <!-- <svelte:fragment slot="pageHeader">Page Header</svelte:fragment> -->
+
     <slot />
+
     <svelte:fragment slot="pageFooter">
         <Footer />
     </svelte:fragment>
