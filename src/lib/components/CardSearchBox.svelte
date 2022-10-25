@@ -1,6 +1,7 @@
 <script lang="ts">
     import { DataTable } from '@brainandbones/skeleton'
     import { debounce } from '$utils/debounce'
+    import type { DeckMastery } from 'src/app';
 
     $: searchValue = '';
 
@@ -10,7 +11,7 @@
         if (value) {
             fetch(`/api/cards?name=${searchValue}`)
             .then(res => res.json())
-            .then((data : Card[]) => {
+            .then((data : DeckMastery.Card[]) => {
                 cardNames = data
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map(c => { return {

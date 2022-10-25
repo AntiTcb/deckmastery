@@ -19,13 +19,13 @@
 </script>
 
 <section class="hidden sm:flex">
-    <a href="https://discord.gg" target="_blank" class="btn btn-sm">
+    <a href="https://discord.gg" target="_blank" rel="noreferrer" class="btn btn-sm">
         <iconify-icon height="24" icon="logos:discord-icon"></iconify-icon>
     </a>
-    <a href="https://twitter.com" target="_blank" class="btn btn-sm">
+    <a href="https://twitter.com" target="_blank" rel="noreferrer" class="btn btn-sm">
         <iconify-icon height="24" icon="logos:twitter"></iconify-icon>
     </a>
-    <a href="https://github.com/AntiTcb/deckmastery" target="_blank" class="btn btn-sm">
+    <a href="https://github.com/AntiTcb/deckmastery" target="_blank" rel="noreferrer" class="btn btn-sm">
         <iconify-icon height="24" icon="logos:github-icon" style="filter: invert(100%);"></iconify-icon>
     </a>
 </section>

@@ -1,16 +1,15 @@
-// See https://kit.svelte.dev/docs/types#app
-// for information about these interfaces
-
 import type { UserData } from 'lucia-sveltekit/adapter';
 
-// and what to do when importing types
+/// <reference types="@sveltejs/kit" />
 declare namespace App {
     // interface PageData {}
     // interface Platform {}
     // interface PrivateEnv {}
     // interface PublicEnv {}
     interface Locals {
-        getSession: import('lucia-sveltekit/types').GetSession
+        getSession: import('lucia-sveltekit/types').GetSession;
+        setSession: import('lucia-sveltekit/types').SetSession;
+        clearSession: import('lucia-sveltekit/types').ClearSession;
     }
 }
 
@@ -25,46 +24,48 @@ declare namespace Lucia {
         patreon_email?: string;
     }
 }
-interface Tag extends DatabaseEntity {
-    name: string;
-    type: string;
-}
-interface Combo extends DatabaseEntity {
-    replay_url: string;
-    title: string;
-    description: string;
-    uploaded_by: User;
-    tags: Tag[];
-    starter_card_id: number;
-    extender_card_id: number?;
-    votes: ComboFavorite;
-}
-interface ComboFavorite extends DatabaseEntity {
-    replay_id: number;
-    favorited_by: string;
-}
-interface DatabaseEntity {
-    id?: number | string;
-    created_at?: Date;
-}
 
-type User = DatabaseEntity & Lucia.UserData;
+declare namespace DeckMastery {
+    interface Tag extends DatabaseEntity {
+        name: string;
+        type: string;
+    }
+    interface Combo extends DatabaseEntity {
+        replay_url: string;
+        title: string;
+        description: string;
+        uploaded_by: User;
+        tags: Tag[];
+        starter_card_id: number;
+        extender_card_id: number?;
+        votes: ComboFavorite;
+    }
+    interface ComboFavorite extends DatabaseEntity {
+        replay_id: number;
+        favorited_by: string;
+    }
+    interface DatabaseEntity {
+        id?: number | string;
+        created_at: Date;
+    }
 
-type Role = 'admin' | 'editor' | 'patron' | 'user';
+    type User = DatabaseEntity & Lucia.UserData;
 
-type Card = {
-    id: string?;
-    name: string;
-    image?: string;
-};
+    type Role = 'admin' | 'editor' | 'patron' | 'user';
 
-declare namespace SearchResults {
-    interface ReplaySearchResults extends Combo {
-        votes?: [
-            {
-                vote: number;
-                voter_id: string;
-            }
-        ];
+    type Card = {
+        id: string?;
+        name: string;
+        image?: string;
+    };
+
+    declare namespace SearchResults {
+        interface ReplaySearchResults extends Combo {
+            likes?: [
+                {
+                    liked_by: string;
+                }
+            ];
+        }
     }
 }

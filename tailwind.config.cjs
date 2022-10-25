@@ -13,8 +13,8 @@ const config = {
     theme: {
         extend: {
             aspectRatio: {
-                'yugioh-card': '3 / 4'
-            }
+                'yugioh-card': '3 / 4',
+            },
         },
     },
 

@@ -15,11 +15,11 @@ export const getDiscordAccessToken = async (origin: string, code: string) => {
             code,
             grant_type: 'authorization_code',
             redirect_uri: `${origin}/api/auth/discord`,
-            scope: 'identify email'
+            scope: 'identify email',
         }),
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
     });
 
     if (!response.ok) {
@@ -33,8 +33,8 @@ export const getDiscordAccessToken = async (origin: string, code: string) => {
 export const getDiscordInfo = async (accessToken: string) => {
     const response = await fetch('https://discord.com/api/v10/users/@me', {
         headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
+            Authorization: `Bearer ${accessToken}`,
+        },
     });
 
     if (!response.ok) {

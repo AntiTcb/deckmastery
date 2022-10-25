@@ -1,20 +1,26 @@
 import { createClient } from '@supabase/supabase-js';
 import { dev } from '$app/environment';
+import type { DeckMastery, Lucia } from 'src/app';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = dev
     ? import.meta.env.VITE_SUPABASE_PRIVATE_KEY
     : import.meta.env.VITE_SUPABASE_PUBLIC_KEY;
 
-export const searchCombos = async (starter: Card, extender: Card | null = null) => {
+export const searchCombos = async (
+    starter: DeckMastery.Card,
+    extender: DeckMastery.Card | null = null
+) => {
     let query = supabase
         .from('combos')
-        .select(`
+        .select(
+            `
             id,
             title,
             replay_url,
             uploaded_by:user(username),
-            likes:likes(liked_by))`)
+            likes:likes(liked_by))`
+        )
         .eq('status', 'approved')
         .eq('starter_card_id', starter.id);
 
@@ -29,7 +35,7 @@ export const searchCombos = async (starter: Card, extender: Card | null = null) 
         return [];
     }
 
-    return data as SearchResults.ReplaySearchResults[];
+    return data as DeckMastery.SearchResults.ReplaySearchResults[];
 };
 
 export const getCombos = async () => {
@@ -42,7 +48,7 @@ export const getCombos = async () => {
         return [];
     }
 
-    return data as Combo[];
+    return data as DeckMastery.Combo[];
 };
 
 export const getCombo = async (id: number) => {
@@ -56,22 +62,22 @@ export const getCombo = async (id: number) => {
         return null;
     }
 
-    return data[0] as Combo;
+    return data[0] as DeckMastery.Combo;
 };
 
 export const getUserCombos = async (id: string) => {
     const { data, error } = await supabase
-    .from('combos')
-    .select(`id,created_at,replay_url,title,description`)
-    .eq('uploaded_by', id);
+        .from('combos')
+        .select(`id,created_at,replay_url,title,description`)
+        .eq('uploaded_by', id);
 
     if (error) {
         console.error(`Supabase GetUserReplays Error:`, error);
         return [];
     }
 
-    return data as Combo[];
-}
+    return data as DeckMastery.Combo[];
+};
 export const getUserById = async (userId: string) => {
     const { data, error } = await supabase
         .from('user')
@@ -84,6 +90,6 @@ export const getUserById = async (userId: string) => {
     }
 
     return data[0] as Lucia.UserAttributes;
-}
+};
 
 export const supabase = createClient(supabaseUrl, supabaseKey);

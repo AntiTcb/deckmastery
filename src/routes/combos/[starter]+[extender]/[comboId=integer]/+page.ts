@@ -1,10 +1,8 @@
-import type { PageLoad } from "./$types";
+import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
-import { getCombo } from '$supabase'
+import { getCombo } from '$supabase';
 
-interface ComboData {
-
-}
+interface ComboData {}
 
 export const load: PageLoad = async ({ fetch, params }) => {
     const combo = await getCombo(parseInt(params.comboId));
@@ -13,5 +11,5 @@ export const load: PageLoad = async ({ fetch, params }) => {
 
     return {
         combo: combo,
-    }
-}
+    };
+};

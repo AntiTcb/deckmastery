@@ -1,11 +1,12 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
 import { auth } from '$lucia';
-import { LuciaError} from 'lucia-sveltekit';
+import { LuciaError } from 'lucia-sveltekit';
 import { error as skError, redirect } from '@sveltejs/kit';
 import { getDiscordAccessToken, getDiscordInfo } from './discordApi';
+import type { Lucia } from 'src/app';
 
-export const GET: RequestHandler = async ({ cookies, url }) => {
+export const GET: RequestHandler = async ({ cookies, locals, url }) => {
     const code = url.searchParams.get(`code`);
     const redirectTo = url.searchParams.get(`state`) || `/`;
 
@@ -15,12 +16,18 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 
     const { accessToken, error: accessTokenError } = await getDiscordAccessToken(url.origin, code);
     if (accessTokenError) {
-        throw skError(500, JSON.stringify({ message: accessTokenError.message, step: 'GET_ACCESS_TOKEN' }));
+        throw skError(
+            500,
+            JSON.stringify({ message: accessTokenError.message, step: 'GET_ACCESS_TOKEN' })
+        );
     }
 
     const { discordInfo, error: discordInfoError } = await getDiscordInfo(accessToken);
     if (discordInfoError) {
-        throw skError(500, JSON.stringify({ message: discordInfoError.message, step: 'GET_DISCORD_INFO' }));
+        throw skError(
+            500,
+            JSON.stringify({ message: discordInfoError.message, step: 'GET_DISCORD_INFO' })
+        );
     }
 
     const { username, email } = discordInfo;
@@ -29,8 +36,7 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
     try {
         user = await auth.getUserByProviderId(`discord`, email);
         console.debug(`User found:`, user);
-    }
-    catch (e) {
+    } catch (e) {
         if (e instanceof LuciaError) {
             user = null;
         } else {
@@ -50,9 +56,8 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
     }
 
     try {
-        const { setSessionCookie } = await auth.createSession(user.id as string);
-        console.debug(`Session created:`, setSessionCookie);
-        setSessionCookie(cookies);
+        const session = await auth.createSession(user.id as string);
+        locals.setSession(session);
     } catch (e) {
         throw skError(
             500,

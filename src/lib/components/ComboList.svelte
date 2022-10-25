@@ -4,9 +4,10 @@
     import { onMount } from 'svelte';
     import { page } from '$app/stores'
     import { goto } from '$app/navigation';
+    import type { DeckMastery } from 'src/app'
 
-    export let starter: Card;
-    export let extender: Card | null = null;
+    export let starter: DeckMastery.Card;
+    export let extender: DeckMastery.Card | null = null;
 
     let replays : any[] = [{}];
     const searchForCombos: any = async () => {

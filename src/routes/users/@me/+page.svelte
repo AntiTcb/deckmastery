@@ -1,8 +1,9 @@
 <script lang="ts">
     import { Divider } from '@brainandbones/skeleton';
-import { getUser } from 'lucia-sveltekit/client';
+    import { getUser } from 'lucia-sveltekit/client';
+    import type { Lucia } from 'src/app';
 
-    const user: User = getUser();
+    const user: Lucia.UserAttributes = getUser();
 </script>
 
 <section class="card">

@@ -4,24 +4,24 @@ interface Config {
 }
 
 export const debounce = (node: any, config: Config) => {
-    const {delay = 750, callback} = config;
+    const { delay = 750, callback } = config;
 
     let timer: NodeJS.Timeout | number;
 
     const handleChange = (e: any) => {
-      const {value} = e.target;
+        const { value } = e.target;
 
-      clearTimeout(timer);
-      timer = window.setTimeout(() => {
-        callback(value);
-      }, delay);
+        clearTimeout(timer);
+        timer = window.setTimeout(() => {
+            callback(value);
+        }, delay);
     };
 
     node.addEventListener('input', handleChange);
 
     return {
-      destroy() {
-        node.removeEventListener("input", handleChange);
-      },
+        destroy() {
+            node.removeEventListener('input', handleChange);
+        },
     };
-  };
+};

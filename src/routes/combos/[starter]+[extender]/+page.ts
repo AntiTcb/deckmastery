@@ -1,10 +1,11 @@
 import type { PageLoad } from './$types';
 
 import { error } from '@sveltejs/kit';
+import type { DeckMastery } from 'src/app';
 
 interface StarterExtenderData {
-    starter: Card;
-    extender: Card;
+    starter: DeckMastery.Card;
+    extender: DeckMastery.Card;
 }
 
 export const load: PageLoad = async ({ fetch, params }) => {

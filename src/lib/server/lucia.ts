@@ -17,7 +17,7 @@ export const auth = lucia({
             username: userData.username,
             role: userData.role,
         };
-    }
+    },
 });
 
 export type Auth = typeof auth;

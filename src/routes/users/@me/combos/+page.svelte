@@ -3,8 +3,9 @@
     import { getUser } from 'lucia-sveltekit/client'
 
     import { DataTable } from '@brainandbones/skeleton'
+    import type { Lucia } from 'src/app';
 
-    const user: User = getUser();
+    const user: Lucia.UserAttributes = getUser();
 </script>
 
 {#await getUserCombos(user.userId) }
