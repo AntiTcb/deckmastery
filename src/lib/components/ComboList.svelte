@@ -19,16 +19,12 @@
 
         replays = tempReplays.map(r => { return {
             id: r.id,
-            title: r.title,
+            title: `<a href="${$page.url.pathname}/${r.id}">${r.title}</a>`,
             uploadedBy: r.uploaded_by?.username ? `<a href="/users/${r.uploaded_by?.username}" target="_blank">${r.uploaded_by.username}</a>` : 'Unknown',
             replay: `<a href="${r.replay_url}" target="_blank">View</a>`,
             likes: r.likes?.length || 0,
         }})
         .sort((a, b) => b.likes - a.likes);
-    }
-
-    const goToCombo = ({ detail }: any) => {
-        goto(`${$page.url.pathname}/${detail.id}`);
     }
 
     onMount(() => {
@@ -41,8 +37,7 @@
         class="replay-list"
         headings={['Id', 'Title', 'Uploaded By', 'Replay', 'Likes']}
         source={replays}
-        interactive
-        on:selected={goToCombo}>
+        interactive>
     </DataTable>
 </section>
 
