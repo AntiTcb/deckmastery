@@ -22,10 +22,10 @@ export const searchCombos = async (
             likes:likes(liked_by))`
         )
         .eq('status', 'approved')
-        .eq('starter_card_id', starter.id);
+        .eq('starter_card', starter.id);
 
     if (extender) {
-        query = query.eq('extender_card_id', extender.id);
+        query = query.eq('extender_card', extender.id);
     }
 
     const { data, error } = await query;

@@ -16,7 +16,7 @@
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map(c => { return {
                     name: c.name,
-                    tableHtml: `<span class="inline-flex place-items-center gap-5"><img src="${c.image}" alt="${c.name}" class="aspect-yugioh-card h-28" /> <p>${c.name}</p></span>`
+                    tableHtml: `<span class="inline-flex place-items-center gap-5"><img src="${c.image_url}" alt="${c.name}" class="aspect-yugioh-card h-28" /> <p>${c.name}</p></span>`
                 }})
             });
         } else {

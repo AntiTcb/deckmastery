@@ -10,7 +10,7 @@
     <hr />
     <div class="card-body">
         <div class="grid grid-cols-2 gap-3 justify-items-left">
-            <strong>Starter:</strong> <a href="">{combo.starter_card_id.name}</a>
+            <strong>Starter:</strong> <a href="">{combo.starter_card.name}</a>
         </div>
     </div>
 </section>

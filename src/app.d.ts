@@ -36,8 +36,8 @@ declare namespace DeckMastery {
         description: string;
         uploaded_by: User;
         tags: Tag[];
-        starter_card_id: number;
-        extender_card_id: number?;
+        starter_card: Card;
+        extender_card?: Card;
         votes: ComboFavorite;
     }
     interface ComboFavorite extends DatabaseEntity {
@@ -54,9 +54,10 @@ declare namespace DeckMastery {
     type Role = 'admin' | 'editor' | 'patron' | 'user';
 
     type Card = {
-        id: string?;
+        id: int;
         name: string;
-        image?: string;
+        text: string;
+        image_url: string;
     };
 
     declare namespace SearchResults {

@@ -5,12 +5,13 @@ import { supabase } from '$supabase';
 export const GET: RequestHandler = async ({ params }) => {
     const { data, error: dbError } = await supabase
         .from('combos')
-        .select('*,uploaded_by:user(username),starter_card_id:cards!combos_starter_card_id_fkey(*)')
+        .select('*,uploaded_by:user(username)')
         .eq('id', params.comboId)
-        .single();
+        .maybeSingle();
 
     if (dbError) {
-        throw error(500, JSON.stringify(dbError));
+        console.error(dbError);
+        throw error(500, dbError);
     }
 
     return json({ combo: data });
