@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Divider } from '@brainandbones/skeleton';
-    import { getUser } from 'lucia-sveltekit/client';
+    import { getUser } from '@lucia-auth/sveltekit/client';
     import type { Lucia } from 'src/app';
 
     const user: Lucia.UserAttributes = getUser();
@@ -8,7 +8,7 @@
 
 <section class="card">
     <header class="card-header text-3xl font-bold text-center">Information</header>
-    <Divider class="my-2" borderWidth="border-4" borderColor="border-ternary-600" />
+    <Divider class="my-2" borderWidth="border-4" borderColor="border-tertiary-600" />
     <div class="card-body">
         <div class="grid grid-cols-2 gap-3 justify-items-center">
             <strong>Username:</strong>

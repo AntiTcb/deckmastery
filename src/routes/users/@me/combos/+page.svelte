@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getUserCombos } from '$supabase';
-    import { getUser } from 'lucia-sveltekit/client'
+    import { getUser } from '@lucia-auth/sveltekit/client'
 
     import { DataTable } from '@brainandbones/skeleton'
     import type { Lucia } from 'src/app';

@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
-import { signOut } from 'lucia-sveltekit/client';
+import { signOut } from '@lucia-auth/sveltekit/client';
 import { redirect } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async () => {

@@ -15,6 +15,7 @@
                 cardNames = data
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map(c => { return {
+                    id: c.id,
                     name: c.name,
                     tableHtml: `<span class="inline-flex place-items-center gap-5"><img src="${c.image_url}" alt="${c.name}" class="aspect-yugioh-card h-28" /> <p>${c.name}</p></span>`
                 }})
@@ -26,7 +27,7 @@
 
     export let onSelectRow: any;
     export let titleText: string;
-    export let placeholder: string;
+    export let placeholder: string = '';
 </script>
 
 
@@ -40,7 +41,7 @@
             <input type="search" placeholder={placeholder} bind:value={searchValue} use:debounce={{ delay: 250, callback: (value) => lookupCards(value)}}></svelte:fragment>
         <svelte:fragment slot="footer">
             {#if cardNames.length && cardNames[0].name}
-                {cardNames.length} {cardNames.length === 1 ? "Combo" : "Combos"}
+                {cardNames.length} {cardNames.length === 1 ? "Card" : "Cards"}
             {/if}
         </svelte:fragment>
     </DataTable>
@@ -52,7 +53,7 @@
     }
 
     /* TODO: this is a hack to hide columns I dont want shown, but data to exist for events */
-    :global(.card-search-box :is(thead, tbody) :is(th, td):first-child) {
+    :global(.card-search-box :is(thead, tbody) :is(th, td):not(:last-child)) {
         display: none;
     }
 </style>

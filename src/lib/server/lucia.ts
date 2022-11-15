@@ -1,5 +1,5 @@
-import lucia from 'lucia-sveltekit';
-import supabase from '@lucia-sveltekit/adapter-supabase';
+import lucia from 'lucia-auth';
+import supabase from '@lucia-auth/adapter-supabase';
 import { dev } from '$app/environment';
 
 const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL;

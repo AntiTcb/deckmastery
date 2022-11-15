@@ -9,8 +9,11 @@
 
     import { AppBar, AppShell, Divider, GradientHeading } from '@brainandbones/skeleton';
     import { storeCurrentUrl } from '$lib/stores/site';
+    import { handleSession } from '@lucia-auth/sveltekit/client';
     import { page } from '$app/stores';
     import { afterNavigate } from '$app/navigation';
+
+    handleSession(page);
 
     afterNavigate((params: any) => {
         console.log($page.url.pathname)
@@ -41,8 +44,9 @@
             </svelte:fragment>
         </AppBar>
     </svelte:fragment>
+
     <svelte:fragment slot="sidebarLeft">
-        <SiteNav />
+        <SiteNav class="hidden lg:grid w-[360px] overflow-hidden" />
     </svelte:fragment>
     <!-- <svelte:fragment slot="pageHeader">Page Header</svelte:fragment> -->
 
