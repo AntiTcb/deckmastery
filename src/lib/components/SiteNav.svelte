@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { AppRail, AppRailTile, Divider } from '@brainandbones/skeleton';
+    import { AppRail, AppRailTile, Divider } from '@skeletonlabs/skeleton';
     import { writable, type Writable } from 'svelte/store';
     import { storeCurrentUrl, storeMobileDrawer } from '$lib/stores/site';
     import { page } from '$app/stores';

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Divider, menu } from '@brainandbones/skeleton';
+    import { Divider, menu } from '@skeletonlabs/skeleton';
     import Icon from '@iconify/svelte';
 
     import { signOut, getUser } from '@lucia-auth/sveltekit/client'

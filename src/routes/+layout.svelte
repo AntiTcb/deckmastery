@@ -1,13 +1,13 @@
 <script lang="ts">
     import '../theme.postcss';
-    import '@brainandbones/skeleton/styles/all.css';
+    import '@skeletonlabs/skeleton/styles/all.css';
     import '../app.postcss';
 
     import Footer from '$components/Footer.svelte';
     import AppBarTrail from '$components/AppBarTrail.svelte';
     import SiteNav from '$components/SiteNav.svelte';
 
-    import { AppBar, AppShell, Divider, GradientHeading } from '@brainandbones/skeleton';
+    import { AppBar, AppShell, Divider, GradientHeading } from '@skeletonlabs/skeleton';
     import { storeCurrentUrl } from '$lib/stores/site';
     import { handleSession } from '@lucia-auth/sveltekit/client';
     import { page } from '$app/stores';

@@ -2,7 +2,7 @@
     import { getUserCombos } from '$supabase';
     import { getUser } from '@lucia-auth/sveltekit/client'
 
-    import { DataTable } from '@brainandbones/skeleton'
+    import { DataTable } from '@skeletonlabs/skeleton'
     import type { Lucia } from 'src/app';
 
     const user: Lucia.UserAttributes = getUser();

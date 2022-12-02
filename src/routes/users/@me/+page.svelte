@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Divider } from '@brainandbones/skeleton';
+    import { Divider } from '@skeletonlabs/skeleton';
     import { getUser } from '@lucia-auth/sveltekit/client';
     import type { Lucia } from 'src/app';
 

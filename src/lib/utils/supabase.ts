@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { dev } from '$app/environment';
 import type { DeckMastery, Lucia } from 'src/app';
+import type { Database } from '$lib/database.types'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = dev
@@ -28,56 +29,42 @@ export const searchCombos = async (
         query = query.eq('extender_card', extender.id);
     }
 
-    const { data, error } = await query;
-
-    if (error) {
-        console.error(`Supabase SearchCombos Error:`, error);
-        return [];
-    }
-
-    return data as DeckMastery.SearchResults.ReplaySearchResults[];
+    return await query;
 };
+type SearchCombosResponse = Awaited<ReturnType<typeof searchCombos>>;
+export type SearchCombosResponseSuccess = SearchCombosResponse['data'];
+export type SearchCombosResponseError = SearchCombosResponse['error'];
 
 export const getCombos = async () => {
-    const { data, error } = await supabase
+    return await supabase
         .from(`combos`)
         .select(`id,created_at,replay_url,title,description,uploaded_by`);
-
-    if (error) {
-        console.error(`Supabase GetReplays Error:`, error);
-        return [];
-    }
-
-    return data as DeckMastery.Combo[];
 };
+type GetCombosResponse = Awaited<ReturnType<typeof getCombos>>;
+export type GetCombosResponseSuccess = GetCombosResponse['data'];
+export type GetCombosResponseError = GetCombosResponse['error'];
+
 
 export const getCombo = async (id: number) => {
-    const { data, error } = await supabase
+    return await supabase
         .from(`combos`)
         .select(`id,created_at,replay_url,title,description,uploaded_by`)
         .eq(`id`, id);
-
-    if (error) {
-        console.error(`Supabase GetReplay Error:`, error);
-        return null;
-    }
-
-    return data[0] as DeckMastery.Combo;
 };
+type GetComboResponse = Awaited<ReturnType<typeof getCombo>>;
+export type GetComboResponseSuccess = GetComboResponse['data'];
+export type GetComboResponseError = GetComboResponse['error'];
 
 export const getUserCombos = async (id: string) => {
-    const { data, error } = await supabase
+    return await supabase
         .from('combos')
         .select(`id,created_at,replay_url,title,description`)
         .eq('uploaded_by', id);
-
-    if (error) {
-        console.error(`Supabase GetUserReplays Error:`, error);
-        return [];
-    }
-
-    return data as DeckMastery.Combo[];
 };
+type GetUserCombosResponse = Awaited<ReturnType<typeof getUserCombos>>;
+export type GetUserCombosResponseSuccess = GetUserCombosResponse['data'];
+export type GetUserCombosResponseError = GetUserCombosResponse['error'];
+
 export const getUserById = async (userId: string) => {
     const { data, error } = await supabase
         .from('user')
@@ -92,4 +79,4 @@ export const getUserById = async (userId: string) => {
     return data[0] as Lucia.UserAttributes;
 };
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey);

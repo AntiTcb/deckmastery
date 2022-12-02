@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { DataTable } from '@brainandbones/skeleton';
+    import { DataTable } from '@skeletonlabs/skeleton';
     import { searchCombos } from '$supabase'
     import { onMount } from 'svelte';
     import { page } from '$app/stores'
