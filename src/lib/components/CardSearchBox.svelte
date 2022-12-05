@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { type DataTableModel, dataTableHandler, dataTableSelect, dataTableSort, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
+    import { type DataTableModel, dataTableHandler, dataTableSort, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
     import { debounce } from '$utils/debounce'
     import type { DeckMastery } from 'src/app';
     import { type Writable, writable } from 'svelte/store';
@@ -16,65 +16,58 @@
 
         cardNames = json;
 
+        await setupDataTable();
         return json as DeckMastery.Card[];
     }
 
-    // const lookupCards: any = (value: string) => {
-    //     if (value) {
-    //         fetch(`/api/cards?name=${searchValue}`)
-    //         .then(res => res.json())
-    //         .then((data : DeckMastery.Card[]) => {
-    //             cardNames = data
-    //             .sort((a, b) => a.name.localeCompare(b.name))
-    //             .map(c => { return {
-    //                 id: c.id,
-    //                 name: c.name,
-    //                 tableHtml: `<span class="inline-flex place-items-center gap-5"><img src="${c.image_url}" alt="${c.name}" class="aspect-yugioh-card h-28" /> <p>${c.name}</p></span>`
-    //             }})
-    //         });
-    //     } else {
-    //         cardNames = [{}]
-    //     }
-    //     console.log(`Card Names`, cardNames);
-    // }
+    let dataTableModel: Writable<DataTableModel>;
 
-    const dataTableModel: Writable<DataTableModel> = writable({
-        source: cardNames,
-        filtered: cardNames,
-        selection: [],
-        search: '',
-        sort: ''
-    });
-
-    dataTableModel.subscribe(v => dataTableHandler(v));
+    const setupDataTable = async () => {
+        dataTableModel = writable({
+            source: cardNames,
+            filtered: cardNames,
+            selection: [],
+            search: '',
+            sort: 'name'
+        });
+        dataTableModel.subscribe(v => dataTableHandler(v));
+    }
 
     export let onSelectRow: any;
     export let titleText: string;
     export let placeholder: string = '';
 </script>
 
-
-<section class="my-5">
+<section class="my-5 {$$props.class}">
     <h2 class="my-2">{titleText}</h2>
-    <input type="search" bind:value={searchValue} use:debounce={{ delay: 250, callback: async (value) => console.log(await getCards(value))}} />
-    <div class="table-container">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Card</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each $dataTableModel.filtered as row, rowIndex}
+    <input type="search" bind:value={searchValue} placeholder={placeholder} use:debounce={{ delay: 250, callback: async (value) => console.log(await getCards(value))}} />
+
+    {#if dataTableModel}
+        <div class="table-container">
+            <table class="table table-hover" role="grid" use:tableInteraction use:tableA11y>
+                <thead on:click={e => { dataTableSort(e, dataTableModel)}} on:keypress >
                     <tr>
-                        <td>{row.name}</td>
-                        <td><span class="inline-flex place-items-center gap-5"><img src="${row.image_url}" alt="${row.name}" class="aspect-yugioh-card h-28" /> <p>${row.name}</p></span></td>
+                        <th class="small-col"></th>
+                        <th data-sort="name">Card</th>
                     </tr>
-                {/each}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    {#each $dataTableModel.filtered as row, rowIndex}
+                        <tr class="cursor-pointer" data-card-id="{row.id}" data-card-name="{row.name}" on:click={e => onSelectRow(row)} aria-rowindex="{rowIndex + 1}">
+                            <td class="small-col" role="gridcell" aria-colindex={1} tabindex="0">
+                                <span class="inline-flex place-items-center gap-5"><img src="{row.image_url}" alt="{row.name}" class="aspect-yugioh-card h-28" /></span>
+                            </td>
+                            <td role="gridcell" aria-colindex={2} tabindex="0">{row.name}</td>
+                        </tr>
+                    {/each}
+                    {#if !$dataTableModel.filtered.length}
+                        <tr>
+                            <td colspan="2">No card with that name seems to exist. Try searching something else.</td>
+                    {/if}
+                </tbody>
+            </table>
+        </div>
+    {/if}
     <!-- <div class="table-container">
         <input type="search" placeholder={placeholder} bind:value={searchValue} use:debounce={{ delay: 250, callback: (value) => lookupCards(value)}} />
         <table
@@ -109,5 +102,9 @@
 <style>
     ::placeholder {
         color: rgba(255,255,255,0.7);
+    }
+
+    .small-col {
+        max-width: 4rem;
     }
 </style>

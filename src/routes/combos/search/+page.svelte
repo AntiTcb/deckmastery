@@ -1,11 +1,11 @@
 <script lang="ts">
     import { nameToRoute } from '$utils/urlHelper';
     import { goto } from '$app/navigation';
-
     import CardSearchBox from '$components/CardSearchBox.svelte'
+    import type { DeckMastery } from 'src/app';
 
-    const onSelectRow = ({ detail: { name } }: CustomEvent) => {
-        goto(`/combos/${nameToRoute(name)}`);
+    const onSelectRow = (e: DeckMastery.Card) => {
+        goto(`/combos/search/${nameToRoute(e.name)}`);
     }
 </script>
 

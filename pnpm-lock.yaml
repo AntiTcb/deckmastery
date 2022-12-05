@@ -29,11 +29,13 @@ specifiers:
   tslib: ^2.4.1
   typescript: ^4.9.3
   vite: ^3.2.4
+  zod: ^3.19.1
 
 dependencies:
   '@lucia-auth/adapter-supabase': 0.1.4_lucia-auth@0.2.0
   '@lucia-auth/sveltekit': 0.3.0_lucia-auth@0.2.0
   lucia-auth: 0.2.0
+  zod: 3.19.1
 
 devDependencies:
   '@iconify/svelte': 3.0.1_svelte@3.53.1
@@ -2389,3 +2391,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod/3.19.1:
+    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
+    dev: false

@@ -11,17 +11,17 @@
             id: 'combos',
             title: 'Combos',
             list: [
-                { href: '/combos', label: 'Search' },
+                { href: '/combos/search', label: 'Search' },
                 { href: '/combos/new', label: 'Create New Combo' },
-                { href: '/@me/combos/favorites', label: 'My Favorites' },
-                { href: '/@me/combos', label: 'My Combos' },
+                { href: '/users/@me/combos/favorites', label: 'My Favorites' },
+                { href: '/users/@me/combos', label: 'My Combos' },
             ]
         },
         {
             id: 'profile',
             title: 'Profile',
             list: [
-                { href: '/@me', label: 'My Profile' },
+                { href: '/users/@me', label: 'My Profile' },
             ]
         }
     ]

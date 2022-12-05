@@ -18,9 +18,10 @@ export const searchCombos = async (
             `
             id,
             title,
+            description,
             replay_url,
             uploaded_by:user(username),
-            likes:likes(liked_by))`
+            likes:likes(liked_by:user(username)))`
         )
         .eq('status', 'approved')
         .eq('starter_card', starter.id);
@@ -44,11 +45,16 @@ type GetCombosResponse = Awaited<ReturnType<typeof getCombos>>;
 export type GetCombosResponseSuccess = GetCombosResponse['data'];
 export type GetCombosResponseError = GetCombosResponse['error'];
 
-
 export const getCombo = async (id: number) => {
     return await supabase
         .from(`combos`)
-        .select(`id,created_at,replay_url,title,description,uploaded_by`)
+        .select(`
+            id,
+            created_at,
+            replay_url,
+            title,
+            description,
+            uploaded_by`)
         .eq(`id`, id);
 };
 type GetComboResponse = Awaited<ReturnType<typeof getCombo>>;
@@ -58,12 +64,35 @@ export type GetComboResponseError = GetComboResponse['error'];
 export const getUserCombos = async (id: string) => {
     return await supabase
         .from('combos')
-        .select(`id,created_at,replay_url,title,description`)
+        .select(`
+            id,
+            created_at,
+            replay_url,
+            title,
+            description,
+            likes:likes(liked_by:user(username)))`)
         .eq('uploaded_by', id);
 };
 type GetUserCombosResponse = Awaited<ReturnType<typeof getUserCombos>>;
 export type GetUserCombosResponseSuccess = GetUserCombosResponse['data'];
 export type GetUserCombosResponseError = GetUserCombosResponse['error'];
+
+export const getUserFavoriteCombos = async(id: string) => {
+    return await supabase
+        .from('combos')
+        .select(`
+            id,
+            created_at,
+            replay_url,
+            title,
+            description,
+            uploaded_by:user(username),
+            likes:likes(liked_by:user(username)))`)
+        .eq('likes.liked_by', id);
+}
+type GetUserFavoriteCombosResponse = Awaited<ReturnType<typeof getUserFavoriteCombos>>;
+export type GetUserFavoriteCombosResponseSuccess = GetUserFavoriteCombosResponse['data'];
+export type GetUserFavoriteCombosResponseError = GetUserFavoriteCombosResponse['error'];
 
 export const getUserById = async (userId: string) => {
     const { data, error } = await supabase
@@ -78,5 +107,36 @@ export const getUserById = async (userId: string) => {
 
     return data[0] as Lucia.UserAttributes;
 };
+
+export const changeComboLike = async (id: number, userId: string, direction: 'like' | 'unlike') => {
+    if (direction === 'unlike') {
+        const { data, error } = await supabase
+            .from('likes')
+            .delete()
+            .eq('combo_id', id)
+            .eq('liked_by', userId);
+    } else {
+        const { data, error } = await supabase
+            .from('likes')
+            .insert({ combo_id: id, liked_by: userId });
+    }
+}
+
+export const createCombo = async (options: {title: string, description: string, starter: number, extender: number, user: string, url: string }) => {
+    return await supabase
+        .from('combos')
+        .insert({
+            title: options.title,
+            description: options.description,
+            starter_card: options.starter,
+            extender_card: options.extender,
+            uploaded_by: options.user,
+            replay_url: options.url,
+            status: 'pending'
+        });
+}
+type CreateComboResponse = Awaited<ReturnType<typeof createCombo>>;
+export type CreateComboResponseSuccess = CreateComboResponse['data'];
+export type CreateComboResponseError = CreateComboResponse['error'];
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseKey);

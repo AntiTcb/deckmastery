@@ -16,10 +16,9 @@
     handleSession(page);
 
     afterNavigate((params: any) => {
-        console.log($page.url.pathname)
         storeCurrentUrl.set($page.url.pathname);
 
-        const isNewPage: boolean = params.from && params.to && params.from.routeId !== params.to.routeId;
+        const isNewPage: boolean = params.from && params.to && params.from.route.id !== params.to.route.id;
         const elemPage = document.querySelector('#page');
         if (isNewPage && elemPage) {
             elemPage.scrollTop = 0;

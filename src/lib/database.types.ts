@@ -68,19 +68,19 @@ export interface Database {
         Row: {
           id: number
           created_at: string | null
-          replay_id: number
+          combo_id: number
           liked_by: string
         }
         Insert: {
           id?: number
           created_at?: string | null
-          replay_id: number
+          combo_id: number
           liked_by: string
         }
         Update: {
           id?: number
           created_at?: string | null
-          replay_id?: number
+          combo_id?: number
           liked_by?: string
         }
       }
@@ -88,19 +88,19 @@ export interface Database {
         Row: {
           id: number
           created_at: string | null
-          replay_id: number | null
+          combo_id: number | null
           tag_id: number | null
         }
         Insert: {
           id?: number
           created_at?: string | null
-          replay_id?: number | null
+          combo_id?: number | null
           tag_id?: number | null
         }
         Update: {
           id?: number
           created_at?: string | null
-          replay_id?: number | null
+          combo_id?: number | null
           tag_id?: number | null
         }
       }

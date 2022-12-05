@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getUserCombos, type GetUserCombosResponseSuccess } from '$supabase';
+    import { getUserFavoriteCombos, type GetUserFavoriteCombosResponseSuccess } from '$supabase';
     import { getUser } from '@lucia-auth/sveltekit/client'
 
     import { type DataTableModel, dataTableHandler, dataTableSelect, dataTableSort, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
@@ -11,7 +11,7 @@
     let dataTableModel : Writable<DataTableModel>;
 
     const setupDataTable = async () => {
-        const { data: combos } : { data: GetUserCombosResponseSuccess } = await getUserCombos($user!.id);
+        const { data: combos } : { data: GetUserFavoriteCombosResponseSuccess } = await getUserFavoriteCombos($user!.id);
         dataTableModel = writable({
             source: combos,
             filtered: combos,
@@ -27,11 +27,12 @@
 {:then}
     <div class="table-container">
         <table class="table table-hover" role="grid" use:tableInteraction use:tableA11y>
-            <thead on:click={e => dataTableSort(e, dataTableModel)} on:keypress>
+            <thead on:click={e => dataTableSort(e, dataTableModel)} on:on:keypress>
                 <tr>
                     <th scope="col" data-sort="title">Combo</th>
-                    <th scope="col" data-sort="likes">Likes</th>
+                    <th scope="col" data-sort="uploader">Uploaded By</th>
                     <th scope="col" data-sort="created">Created At</th>
+                    <th scope="col" data-sort="likes">Likes</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,8 +42,9 @@
                             <p><a href="/combos/{combo.id}">{combo.title}</a></p>
                             <span class="italic text-gray-300">{combo.description}</span>
                         </td>
-                        <td>{combo.likes.length}</td>
+                        <td><a href="/users/{combo.uploaded_by.username}" target="_blank" rel="noreferrer">{combo.uploaded_by.username}</a></td>
                         <td>{new Intl.DateTimeFormat([], { dateStyle: 'medium', timeStyle: 'short'}).format(new Date(combo.created_at))}</td>
+                        <td>{combo.likes.length}</td>
                     </tr>
                 {/each}
             </tbody>

@@ -41,7 +41,7 @@ declare namespace DeckMastery {
         votes: ComboFavorite;
     }
     interface ComboFavorite extends DatabaseEntity {
-        replay_id: number;
+        combo_id: number;
         favorited_by: string;
     }
     interface DatabaseEntity {
