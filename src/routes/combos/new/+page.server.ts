@@ -1,39 +1,28 @@
 import type { Actions } from './$types';
-import { invalid } from '@sveltejs/kit';
+import { invalid, redirect } from '@sveltejs/kit';
 import { createCombo } from '$supabase';
-import { z } from 'zod';
-
-const newComboSchema = z.object({
-    title: z.string().trim().min(1).max(100),
-    description: z.string().trim().min(1).max(1000),
-    starterId: z.number().positive(),
-    extenderId: z.number().positive().optional(),
-    replayUrl: z.string().trim().url().startsWith("https://duelingbook.com", { message: "Only Dueling Book Replays are supported at this time."}),
-});
+import { newComboSchema } from '$lib/zod/schemas';
 
 export const actions: Actions = {
     default: async ({ request, locals }) => {
-        const formData = await request.formData();
+        const formData = Object.fromEntries(await request.formData());
+
         const comboData = newComboSchema.safeParse({
-            title: formData.get('title'),
-            description: formData.get('description'),
-            starterId: parseInt(formData.get('starterId')?.toString() || '0'),
-            extenderId: parseInt(formData.get('extenderId')?.toString() || '0'),
-            replayUrl: formData.get('replayUrl'),
+            title: formData.title,
+            description: formData.description,
+            replayUrl: formData.replayUrl,
+            cards: formData.cards.toString().split(',').map(c => parseInt(c))
         });
+
+        console.log('Form data', formData);
+
         const { user } = await locals.getSessionUser();
         const uploadedBy = user.id;
 
-        console.log(`Combo Data`, comboData);
-
         if (!comboData.success && comboData.error) {
-            const errors = comboData.error.issues.map(i => {
-                return {
-                    field: i.path[0],
-                    message: i.message,
-                }
-            });
-            return invalid(400, { saved: false, errors })
+            console.error('Combo Data Validation Failed', comboData.error);
+            const { fieldErrors: errors } = comboData.error.flatten();
+            return invalid(400, { data: formData, errors })
         }
 
         const { data, error } = await createCombo({
@@ -42,12 +31,12 @@ export const actions: Actions = {
             starter: comboData.data.starterId,
             extender: comboData.data.extenderId,
             url: comboData.data.replayUrl,
-            user: comboData.data.uploadedBy,
+            user: uploadedBy,
+            cards: comboData.data.cards,
         });
 
-        console.log(`New Combo`, data);
-        console.log(`New Combo Error`, error);
+        console.log('New Combo ID', data);
 
-        return { saved: true, comboId: 0 }
+        throw redirect(301, `/combos/${data.id}`)
     },
 }

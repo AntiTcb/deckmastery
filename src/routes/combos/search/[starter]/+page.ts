@@ -8,7 +8,7 @@ interface StarterData {
 }
 
 export const load: PageLoad = async ({ fetch, params }) => {
-    const resp = await fetch(`/api/combos/${params.starter}`);
+    const resp = await fetch(`/api/combos/search/${params.starter}`);
     const data: StarterData = await resp.json();
 
     if (data?.starter) {

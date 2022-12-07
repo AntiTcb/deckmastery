@@ -8,27 +8,26 @@ const supabaseKey = dev
     ? import.meta.env.VITE_SUPABASE_PRIVATE_KEY
     : import.meta.env.VITE_SUPABASE_PUBLIC_KEY;
 
-export const searchCombos = async (
-    starter: DeckMastery.Card,
-    extender: DeckMastery.Card | null = null
-) => {
+export const searchCombos = async (cardIds: number[]) => {
     let query = supabase
         .from('combos')
-        .select(
-            `
+        .select(`
             id,
             title,
+            created_at,
             description,
             replay_url,
+            combos_cards!inner(
+                cards!inner (
+                    id,
+                    name,
+                    image_url
+                )
+            ),
             uploaded_by:user(username),
-            likes:likes(liked_by:user(username)))`
-        )
-        .eq('status', 'approved')
-        .eq('starter_card', starter.id);
-
-    if (extender) {
-        query = query.eq('extender_card', extender.id);
-    }
+            likes:likes(liked_by:user(username)))
+        `)
+        .in('combos_cards.cards.id', cardIds);
 
     return await query;
 };
@@ -122,7 +121,7 @@ export const changeComboLike = async (id: number, userId: string, direction: 'li
     }
 }
 
-export const createCombo = async (options: {title: string, description: string, starter: number, extender: number, user: string, url: string }) => {
+export const createCombo = async (options: {title: string, description: string, starter: number, extender: number, user: string, url: string, cards: number[] }) => {
     return await supabase
         .from('combos')
         .insert({
@@ -130,10 +129,13 @@ export const createCombo = async (options: {title: string, description: string, 
             description: options.description,
             starter_card: options.starter,
             extender_card: options.extender,
+            cards: options.cards,
             uploaded_by: options.user,
             replay_url: options.url,
             status: 'pending'
-        });
+        })
+        .select()
+        .single();
 }
 type CreateComboResponse = Awaited<ReturnType<typeof createCombo>>;
 export type CreateComboResponseSuccess = CreateComboResponse['data'];

@@ -24,7 +24,7 @@
 
     const setupDataTable = async () => {
         dataTableModel = writable({
-            source: cardNames,
+            source: cardNames.filter(c => !exclude.includes(c.id)),
             filtered: cardNames,
             selection: [],
             search: '',
@@ -36,6 +36,7 @@
     export let onSelectRow: any;
     export let titleText: string;
     export let placeholder: string = '';
+    export let exclude: Array<number> = [];
 </script>
 
 <section class="my-5 {$$props.class}">
@@ -62,41 +63,13 @@
                     {/each}
                     {#if !$dataTableModel.filtered.length}
                         <tr>
-                            <td colspan="2">No card with that name seems to exist. Try searching something else.</td>
+                            <td colspan="2">No card with that name seems to exist{exclude.length ? ', or, you have already selected this card' : ''}. Try searching something else.</td>
+                        </tr>
                     {/if}
                 </tbody>
             </table>
         </div>
     {/if}
-    <!-- <div class="table-container">
-        <input type="search" placeholder={placeholder} bind:value={searchValue} use:debounce={{ delay: 250, callback: (value) => lookupCards(value)}} />
-        <table
-            class="card-search-box table table-hover"
-            use:tableInteraction
-            use:tableA11y
-            on:selected={onSelectRow}>
-            <thead on:click={e => { dataTableSort(e, dataTableModel) }} on:keypress>
-                <tr>
-                    <th data-sort="name">Name</th>
-                    <th>Card</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each $dataTableModel.filtered as row, rowIndex}
-                     <tr>
-                        <td>{row.name}</td>
-                        <td>{@html row.tableHtml}</td>
-                     </tr>
-                {/each}
-            </tbody>
-
-            <svelte:fragment slot="footer">
-                {#if cardNames.length && cardNames[0].name}
-                    {cardNames.length} {cardNames.length === 1 ? "Card" : "Cards"}
-                {/if}
-            </svelte:fragment>
-        </table>
-    </div> -->
 </section>
 
 <style>

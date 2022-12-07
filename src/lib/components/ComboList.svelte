@@ -8,8 +8,8 @@
 
     const user = getUser();
 
-    export let starter: DeckMastery.Card;
-    export let extender: DeckMastery.Card | null = null;
+    export let cardNames = new Array<string>();
+    export let cardIds = new Array<number>();
 
     type ComboListDataTableModel = DataTableModel & {
         source: Combo[];
@@ -30,9 +30,9 @@
     let combos: Combo[] | undefined = new Array<Combo>;
 
     const searchForCombos: any = async () => {
-        if (!starter) return new Array<DeckMastery.Combo>();
+        if (!cardIds.length) return new Array<DeckMastery.Combo>();
 
-        const { data }: { data: SearchCombosResponseSuccess } = await searchCombos(starter, extender);
+        const { data }: { data: SearchCombosResponseSuccess } = await searchCombos(cardIds);
         combos = data?.map(r => {
             return {
                 id: r.id,
@@ -95,8 +95,10 @@
                     {#each $dataTableModel.filtered as row, rowIndex}
                         <tr aria-rowindex="{rowIndex + 1}">
                             <td role="gridcell" aria-colindex={1} tabindex="0">
-                                <p>{row.title}</p>
-                                <span class="italic text-gray-300">{row.description}</span>
+                                <a href="/combos/{row.id}">
+                                    <p>{row.title}</p>
+                                    <span class="italic text-gray-300">{row.description}</span>
+                                </a>
                             </td>
                             <td role="gridcell" aria-colindex={2} tabindex="0">
                                 {#if row.uploadedBy}

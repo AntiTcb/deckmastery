@@ -14,7 +14,7 @@
     let { starter } = data;
 
     const onComboSelect = ({ detail: { name }}: CustomEvent) => {
-        goto(`/combos/${$page.params.starter}+${nameToRoute(name)}`);
+        goto(`/combos/search/${$page.params.starter}+${nameToRoute(name)}`);
     }
 </script>
 
@@ -27,7 +27,7 @@
     <CardSearchBox titleText="Extender" placeholder="Search an extender" onSelectRow={onComboSelect} />
 {:else}
     <span class="inline-flex flex-col gap-2">
-        <a href="/combos/{$page.params.starter}/new" class="btn bg-green-500 btn-base ring-2 ring-green-500 ring-inset !text-white rounded-lg">
+        <a href="/combos/new/?cards={$page.params.starter}" class="btn bg-green-500 btn-base ring-2 ring-green-500 ring-inset !text-white rounded-lg">
             <span><Icon icon="fluent:add-12-filled"/></span>
             <span>Create new Combo</span>
         </a>
@@ -35,4 +35,4 @@
     </span>
 {/if}
 
-<ComboList starter={starter} />
+<ComboList cardIds={[starter.id]} />

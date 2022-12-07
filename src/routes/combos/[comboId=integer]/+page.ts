@@ -8,10 +8,8 @@ interface ComboData {
 }
 
 export const load: PageLoad = async({ fetch, params }) => {
-    const resp = await fetch(`/api/combos/${params.starter}/${params.comboId}`);
+    const resp = await fetch(`/api/combos/${params.comboId}`);
     const data: ComboData = await resp.json();
-
-    console.log(data);
 
     if (data?.combo.title) {
         return {

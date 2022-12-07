@@ -3,7 +3,6 @@
     import { getUser } from '@lucia-auth/sveltekit/client'
 
     import { type DataTableModel, dataTableHandler, dataTableSelect, dataTableSort, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
-    import type { Lucia } from 'src/app';
     import { writable, type Writable } from 'svelte/store';
 
     const user = getUser();
