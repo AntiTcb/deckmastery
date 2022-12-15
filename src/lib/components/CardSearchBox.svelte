@@ -1,37 +1,32 @@
 <script lang="ts">
-    import { type DataTableModel, dataTableHandler, dataTableSort, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
+    import { createDataTableStore, dataTableHandler, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
     import { debounce } from '$utils/debounce'
-    import type { DeckMastery } from 'src/app';
-    import { type Writable, writable } from 'svelte/store';
+    import type { Card } from '$supabase';
 
     $: searchValue = '';
 
-    let cardNames = new Array<DeckMastery.Card>();
+    let cardNames = new Array<Card>();
 
     const getCards = async (value: string) => {
-        if (!value) return new Array<DeckMastery.Card>();
+        if (!value) return new Array<Card>();
 
         const res = await fetch(`/api/cards?name=${value}`);
         const json = await res.json();
 
         cardNames = json;
+        dataTableStore.updateSource(cardNames);
 
-        await setupDataTable();
-        return json as DeckMastery.Card[];
+        return json as Card[];
     }
 
-    let dataTableModel: Writable<DataTableModel>;
-
-    const setupDataTable = async () => {
-        dataTableModel = writable({
-            source: cardNames.filter(c => !exclude.includes(c.id)),
-            filtered: cardNames,
-            selection: [],
+    const dataTableStore = createDataTableStore(
+        cardNames.filter(c => !exclude.includes(c.id)),
+        {
             search: '',
             sort: 'name'
-        });
-        dataTableModel.subscribe(v => dataTableHandler(v));
-    }
+        }
+    );
+    dataTableStore.subscribe(v => dataTableHandler(v));
 
     export let onSelectRow: any;
     export let titleText: string;
@@ -41,19 +36,19 @@
 
 <section class="my-5 {$$props.class}">
     <h2 class="my-2">{titleText}</h2>
-    <input type="search" bind:value={searchValue} placeholder={placeholder} use:debounce={{ delay: 250, callback: async (value) => console.log(await getCards(value))}} />
+    <input type="search" bind:value={searchValue} placeholder={placeholder} use:debounce={{ delay: 250, callback: async (value) => await getCards(value)}} />
 
-    {#if dataTableModel}
+    {#if dataTableStore}
         <div class="table-container">
             <table class="table table-hover" role="grid" use:tableInteraction use:tableA11y>
-                <thead on:click={e => { dataTableSort(e, dataTableModel)}} on:keypress >
+                <thead on:click={e => { dataTableStore.sort(e)}} on:keypress >
                     <tr>
                         <th class="small-col"></th>
                         <th data-sort="name">Card</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {#each $dataTableModel.filtered as row, rowIndex}
+                    {#each $dataTableStore.filtered as row, rowIndex}
                         <tr class="cursor-pointer" data-card-id="{row.id}" data-card-name="{row.name}" on:click={e => onSelectRow(row)} aria-rowindex="{rowIndex + 1}">
                             <td class="small-col" role="gridcell" aria-colindex={1} tabindex="0">
                                 <span class="inline-flex place-items-center gap-5"><img src="{row.image_url}" alt="{row.name}" class="aspect-yugioh-card h-28" /></span>
@@ -61,7 +56,7 @@
                             <td role="gridcell" aria-colindex={2} tabindex="0">{row.name}</td>
                         </tr>
                     {/each}
-                    {#if !$dataTableModel.filtered.length}
+                    {#if !$dataTableStore.filtered.length}
                         <tr>
                             <td colspan="2">No card with that name seems to exist{exclude.length ? ', or, you have already selected this card' : ''}. Try searching something else.</td>
                         </tr>

@@ -13,7 +13,6 @@ export const auth = lucia({
             id: userData.id,
             createdAt: userData.created_at,
             discordEmail: userData.discord_email,
-            patreonEmail: userData.patreon_email,
             username: userData.username,
             role: userData.role,
         };

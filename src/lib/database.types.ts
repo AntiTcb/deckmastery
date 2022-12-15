@@ -29,39 +29,70 @@ export interface Database {
           image_url?: string | null
         }
       }
-      combos: {
+      combo_tags: {
         Row: {
           id: number
           created_at: string | null
-          replay_url: string | null
-          title: string | null
-          status: Database["public"]["Enums"]["replay_status"] | null
-          starter_card: number | null
-          extender_card: number | null
-          uploaded_by: string | null
-          description: string | null
+          combo_id: number | null
+          tag_id: number | null
         }
         Insert: {
           id?: number
           created_at?: string | null
-          replay_url?: string | null
-          title?: string | null
-          status?: Database["public"]["Enums"]["replay_status"] | null
-          starter_card?: number | null
-          extender_card?: number | null
-          uploaded_by?: string | null
-          description?: string | null
+          combo_id?: number | null
+          tag_id?: number | null
         }
         Update: {
           id?: number
           created_at?: string | null
-          replay_url?: string | null
-          title?: string | null
+          combo_id?: number | null
+          tag_id?: number | null
+        }
+      }
+      combos: {
+        Row: {
+          id: number
+          created_at: string | null
+          replay_url: string
+          title: string
+          status: Database["public"]["Enums"]["replay_status"] | null
+          uploaded_by: string
+          description: string | null
+          cards: number[] | null
+        }
+        Insert: {
+          id?: number
+          created_at?: string | null
+          replay_url: string
+          title: string
           status?: Database["public"]["Enums"]["replay_status"] | null
-          starter_card?: number | null
-          extender_card?: number | null
-          uploaded_by?: string | null
+          uploaded_by: string
           description?: string | null
+          cards?: number[] | null
+        }
+        Update: {
+          id?: number
+          created_at?: string | null
+          replay_url?: string
+          title?: string
+          status?: Database["public"]["Enums"]["replay_status"] | null
+          uploaded_by?: string
+          description?: string | null
+          cards?: number[] | null
+        }
+      }
+      combos_cards: {
+        Row: {
+          combo_id: number
+          card_id: number
+        }
+        Insert: {
+          combo_id: number
+          card_id: number
+        }
+        Update: {
+          combo_id?: number
+          card_id?: number
         }
       }
       likes: {
@@ -82,26 +113,6 @@ export interface Database {
           created_at?: string | null
           combo_id?: number
           liked_by?: string
-        }
-      }
-      replay_tags: {
-        Row: {
-          id: number
-          created_at: string | null
-          combo_id: number | null
-          tag_id: number | null
-        }
-        Insert: {
-          id?: number
-          created_at?: string | null
-          combo_id?: number | null
-          tag_id?: number | null
-        }
-        Update: {
-          id?: number
-          created_at?: string | null
-          combo_id?: number | null
-          tag_id?: number | null
         }
       }
       session: {
@@ -127,18 +138,18 @@ export interface Database {
       tags: {
         Row: {
           id: number
-          name: string | null
-          type: string | null
+          name: string
+          type: string
         }
         Insert: {
           id?: number
-          name?: string | null
-          type?: string | null
+          name: string
+          type: string
         }
         Update: {
           id?: number
-          name?: string | null
-          type?: string | null
+          name?: string
+          type?: string
         }
       }
       user: {
@@ -149,7 +160,7 @@ export interface Database {
           hashed_password: string | null
           discord_email: string | null
           patreon_email: string | null
-          username: string | null
+          username: string
           role: Database["public"]["Enums"]["roles"]
         }
         Insert: {
@@ -159,7 +170,7 @@ export interface Database {
           hashed_password?: string | null
           discord_email?: string | null
           patreon_email?: string | null
-          username?: string | null
+          username: string
           role?: Database["public"]["Enums"]["roles"]
         }
         Update: {
@@ -169,7 +180,7 @@ export interface Database {
           hashed_password?: string | null
           discord_email?: string | null
           patreon_email?: string | null
-          username?: string | null
+          username?: string
           role?: Database["public"]["Enums"]["roles"]
         }
       }

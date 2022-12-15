@@ -19,7 +19,8 @@ export const GET: RequestHandler = async ({ params }) => {
                     image_url
                 )
             ),
-            uploaded_by:user(username)`)
+            uploaded_by:user(username),
+            likes(liked_by:user(username))`)
         .eq('id', params.comboId)
         .maybeSingle();
 
@@ -28,5 +29,5 @@ export const GET: RequestHandler = async ({ params }) => {
         throw error(500, dbError);
     }
 
-    return json({ combo: data });
+    return json(data);
 }

@@ -1,19 +1,28 @@
 import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
-import type { DeckMastery } from 'src/app';
+import type { Combo } from '$supabase';
 
-interface ComboData {
-    combo: DeckMastery.Combo;
-    starter: DeckMastery.Card;
-}
-
-export const load: PageLoad = async({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params }) => {
     const resp = await fetch(`/api/combos/${params.comboId}`);
-    const data: ComboData = await resp.json();
+    const data: Combo & {
+        uploaded_by: {
+            username: string;
+        },
+        likes: [{liked_by: {
+            username: string;
+        }}],
+        combos_cards: [{
+            cards: {
+                id: number;
+                name: string;
+                image_url: string;
+            }
+        }]
+    } = await resp.json();
 
-    if (data?.combo.title) {
+    if (data.title) {
         return {
-            combo: data.combo,
+            combo: data,
         };
     }
 

@@ -22,7 +22,7 @@ export const GET: RequestHandler = async ({ url, params }) => {
                 )
             ),
             uploaded_by:user(username),
-            likes:likes(liked_by:user(username)))
+            likes(liked_by:user(username)))
         `)
         .in('combos_cards.cards.id', cardIds);
 

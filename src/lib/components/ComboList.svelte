@@ -1,77 +1,35 @@
 <script lang="ts">
-    import { type DataTableModel, dataTableHandler, dataTableSelect, dataTableSort, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
-    import { changeComboLike, searchCombos, type SearchCombosResponseSuccess } from '$supabase'
+    import { createDataTableStore, dataTableHandler, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
+    import { likeCombo, unlikeCombo, searchCombos, type SearchCombosResponseSuccess } from '$supabase'
     import { onMount } from 'svelte';
     import { getUser } from '@lucia-auth/sveltekit/client';
-    import type { DeckMastery } from 'src/app'
-    import { type Writable, writable } from 'svelte/store';
+    import type { Database } from '$lib/database.types'
 
     const user = getUser();
 
-    export let cardNames = new Array<string>();
     export let cardIds = new Array<number>();
 
-    type ComboListDataTableModel = DataTableModel & {
-        source: Combo[];
-        filtered: Combo[];
-        selection: any[];
-        search: string;
-        sort: string;
-    }
-    let dataTableModel: Writable<ComboListDataTableModel>;
+    let combos: SearchCombosResponseSuccess[] = new Array<SearchCombosResponseSuccess>;
 
-    interface Combo {
-        id: number;
-        title: string;
-        uploadedBy: string | null;
-        likes: number;
-        likedBy: { liked_by: string }[];
-    }
-    let combos: Combo[] | undefined = new Array<Combo>;
+    const dataTableStore = createDataTableStore(
+        combos,
+        {
+            search: '',
+            sort: ''
+        }
+    );
+    dataTableStore.subscribe(v => dataTableHandler(v));
 
     const searchForCombos: any = async () => {
-        if (!cardIds.length) return new Array<DeckMastery.Combo>();
+        if (!cardIds.length) return new Array<Database['public']['Tables']['combos']['Row']>();
 
         const { data }: { data: SearchCombosResponseSuccess } = await searchCombos(cardIds);
-        combos = data?.map(r => {
-            return {
-                id: r.id,
-                title: r.title,
-                description: r.description,
-                uploadedBy: r.uploaded_by?.username ?? null,
-                replay: r.replay_url,
-                likes: r.likes?.length || 0,
-                likedBy: r.likes
-            } as Combo;
-        });
-
-        setupDataTable();
+        dataTableStore.updateSource(data);
     }
 
-    const setupDataTable = () => {
-        dataTableModel = writable({
-            source: combos,
-            filtered: combos,
-            selection: [],
-            search: '',
-            sort: 'likes'
-        } as ComboListDataTableModel);
-        dataTableModel.subscribe(v => dataTableHandler(v));
-    }
-
-    const changeLike = ((e: HTMLElement, comboId: number, direction: 'like' | 'unlike') => {
-        const likeCountEle = e.parentElement!.querySelector('.like-count');
-        likeCountEle!.textContent = (parseInt(likeCountEle!.textContent || '0') + (direction === 'like' ? 1 : -1)).toString();
-        likeCountEle!.classList.add(`font-bold`);
-        likeCountEle!.classList.add(direction === 'like' ? 'text-green-500' : 'text-red-500');
-
-        const newEle = e.cloneNode(true);
-        (newEle as HTMLElement).classList.add('hidden');
-        e.replaceWith(newEle);
-
-        changeComboLike(comboId, $user!.id, direction)
-            .then(r => {})
-            .catch(e => console.error(e));
+    const changeLike = (async (e: HTMLElement, comboId: number, direction: 'like' | 'unlike') => {
+        const { data, error } = direction === 'like' ? await likeCombo(comboId, $user!.id) : await unlikeCombo(comboId, $user!.id);
+        await searchForCombos();
     });
 
     onMount(() => {
@@ -80,7 +38,7 @@
 </script>
 
 <section class="my-5">
-    {#if dataTableModel}
+    {#if dataTableStore}
         <div class="table-container">
             <table class="table table-hover" role="grid" use:tableInteraction use:tableA11y>
                 <thead>
@@ -92,12 +50,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {#each $dataTableModel.filtered as row, rowIndex}
+                    {#each $dataTableStore.filtered as row, rowIndex}
                         <tr aria-rowindex="{rowIndex + 1}">
                             <td role="gridcell" aria-colindex={1} tabindex="0">
                                 <a href="/combos/{row.id}">
                                     <p>{row.title}</p>
-                                    <span class="italic text-gray-300">{row.description}</span>
+                                    <span class="italic text-gray-300 whitespace-pre-wrap">{row.description}</span>
                                 </a>
                             </td>
                             <td role="gridcell" aria-colindex={2} tabindex="0">
@@ -112,15 +70,15 @@
                                 <div class="inline-flex justify-center items-center content-around gap-3">
                                     <span class="like-count">{row.likes}</span>
                                     {#if row.likedBy.find(l => l.liked_by.username === $user.username)}
-                                        <iconify-icon height="24" icon="bxs:dislike" class="text-red-600" on:click={e => changeLike(e.target, row.id, 'unlike')} title="Unlike"></iconify-icon>
+                                        <iconify-icon height="24" icon="bxs:like" class="text-green-600" title="Like" on:click={e => changeLike(e.target, row.id, 'unlike')} on:keypress></iconify-icon>
                                     {:else}
-                                        <iconify-icon height="24" icon="bxs:like" class="text-green-600" on:click={e => changeLike(e.target, row.id, 'like')} title="like"></iconify-icon>
+                                        <iconify-icon height="24" icon="bxs:like" class="text-white-600" title="Unlike" on:click={e => changeLike(e.target, row.id, 'like')} on:keypress></iconify-icon>
                                     {/if}
                                 </div>
                             </td>
                         </tr>
                     {/each}
-                    {#if !$dataTableModel.filtered.length}
+                    {#if !$dataTableStore.filtered.length}
                         <tr>
                             <td colspan="4">No combos exist yet. Go ahead and be the first to make one!</td>
                         </tr>

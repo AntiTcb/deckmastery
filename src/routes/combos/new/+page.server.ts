@@ -16,7 +16,7 @@ export const actions: Actions = {
 
         console.log('Form data', formData);
 
-        const { user } = await locals.getSessionUser();
+        const { user } = await locals.validateUser();
         const uploadedBy = user.id;
 
         if (!comboData.success && comboData.error) {
@@ -28,14 +28,10 @@ export const actions: Actions = {
         const { data, error } = await createCombo({
             title: comboData.data.title,
             description: comboData.data.description,
-            starter: comboData.data.starterId,
-            extender: comboData.data.extenderId,
             url: comboData.data.replayUrl,
             user: uploadedBy,
             cards: comboData.data.cards,
         });
-
-        console.log('New Combo ID', data);
 
         throw redirect(301, `/combos/${data.id}`)
     },

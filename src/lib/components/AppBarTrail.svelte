@@ -1,6 +1,5 @@
 <script lang="ts">
     import { Divider, menu } from '@skeletonlabs/skeleton';
-    import Icon from '@iconify/svelte';
 
     import { signOut, getUser } from '@lucia-auth/sveltekit/client'
     import { page } from '$app/stores';

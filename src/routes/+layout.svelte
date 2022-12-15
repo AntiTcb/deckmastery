@@ -7,11 +7,12 @@
     import AppBarTrail from '$components/AppBarTrail.svelte';
     import SiteNav from '$components/SiteNav.svelte';
 
-    import { AppBar, AppShell, Divider, GradientHeading, Toast } from '@skeletonlabs/skeleton';
+    import { AppBar, AppShell, drawerStore, type DrawerSettings, GradientHeading, Toast, Drawer } from '@skeletonlabs/skeleton';
     import { storeCurrentUrl } from '$lib/stores/site';
     import { handleSession } from '@lucia-auth/sveltekit/client';
     import { page } from '$app/stores';
     import { afterNavigate } from '$app/navigation';
+    import SiteNavDrawer from '$components/SiteNavDrawer.svelte';
 
     handleSession(page);
 
@@ -23,17 +24,26 @@
         if (isNewPage && elemPage) {
             elemPage.scrollTop = 0;
         }
-    })
+    });
+
+    const drawerOpen = () => {
+        const s: DrawerSettings = { id: 'mobile-nav' };
+        drawerStore.open(s);
+    }
 </script>
 
 <svelte:head>
     <script src="https://code.iconify.design/iconify-icon/1.0.0/iconify-icon.min.js"></script>
 </svelte:head>
 
-<AppShell slotPageContent="pr-3 my-5" slotPageFooter="bg-surface-800 py-2 px-1">
+<AppShell slotPageContent="px-3 my-5" slotPageFooter="bg-surface-800 py-2 px-1">
     <svelte:fragment slot="header">
         <AppBar>
             <svelte:fragment slot="lead">
+                <!-- Mobile Drawer Menu -->
+                <button on:click={drawerOpen} class="lg:!hidden btn btn-sm">
+                    <iconify-icon icon="ci:hamburger" height="24"></iconify-icon>
+                </button>
                 <a href="/">
                     <GradientHeading tag="h1" class="font-bold text-2xl" from="from-warning-500">Deck Mastery</GradientHeading>
                 </a>
@@ -56,3 +66,5 @@
     </svelte:fragment>
 </AppShell>
 <Toast />
+<Drawer />
+<SiteNavDrawer />

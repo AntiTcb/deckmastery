@@ -8,7 +8,7 @@
 <h2 class="my-2 text-center">Welcome to Deck Mastery, the best Yu-Gi-Oh! combo repository!</h2>
 
 <section class="flex flex-col gap-2">
-    <a href="/combos" class="card hover:shadow-2xl hover:-translate-y-0.5">
+    <a href="/combos/search" class="card hover:shadow-2xl hover:-translate-y-0.5">
         <header class="card-header">Combos by Card</header>
         <div class="card-body">Search for a card you'd like to see combos for</div>
     </a>

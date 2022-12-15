@@ -28,8 +28,6 @@
 
             <strong>Discord Connected:</strong>
             <span>{!!$user.discordEmail ? `Yes (${$user.discordEmail})` : 'No'}</span>
-            <strong>Patreon Connected:</strong>
-            <span>{!!$user.patreonEmail ? `Yes (${$user.patreonEmail}}` : 'No'}</span>
         </div>
     </div>
 </section>

@@ -1,8 +1,6 @@
-import { error, type RequestHandler } from '@sveltejs/kit';
-
 import { auth } from '$lucia';
 import { LuciaError } from 'lucia-auth';
-import { error as skError, redirect } from '@sveltejs/kit';
+import { error as skError, redirect, type RequestHandler } from '@sveltejs/kit';
 import { getDiscordAccessToken, getDiscordInfo } from './discordApi';
 import type { Lucia } from 'src/app';
 
@@ -57,7 +55,7 @@ export const GET: RequestHandler = async ({ cookies, locals, url }) => {
 
     try {
         const session = await auth.createSession(user.id as string);
-        const sessionCookies = await auth.createSessionCookies(session);
+        const sessionCookies = auth.createSessionCookies(session);
         const serializedCookies = sessionCookies.map((cookie) => cookie.serialize());
 
         return new Response(null, {
