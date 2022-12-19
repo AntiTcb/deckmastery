@@ -3,6 +3,10 @@
     import { getUser } from '@lucia-auth/sveltekit/client';
     import type { ClientUser } from '@lucia-auth/sveltekit/client/user';
     import type { Readable } from 'svelte/store';
+    import type { PageData } from './$types';
+
+    export let data: PageData;
+    const { uploadedCount, favoriteCount } = data;
 
     const user: Readable<ClientUser> = getUser();
 </script>
@@ -20,9 +24,9 @@
             <Divider class="col-span-2" />
 
             <strong>Combos Uploaded:</strong>
-            <span>0</span>
+            <span>{uploadedCount}</span>
             <strong>Combos Favorited:</strong>
-            <span>0</span>
+            <span>{favoriteCount}</span>
 
             <Divider class="col-span-2" />
 

@@ -3,18 +3,31 @@
     import { writable, type Writable } from 'svelte/store';
     import { storeCurrentUrl } from '$lib/stores/site';
     import { page } from '$app/stores';
+    import { getUser } from '@lucia-auth/sveltekit/client';
 
     export let embedded: boolean = false;
 
-    let menuNavLinks: any = [
+    const user = getUser();
+
+    let menuNavLinks: {
+        id: string,
+        title: string,
+        list: {
+            href: string,
+            label: string,
+            badge?: string,
+            hide?: () => boolean
+        }[],
+        hide?: () => boolean
+    }[] = [
         {
             id: 'combos',
             title: 'Combos',
             list: [
                 { href: '/combos/search', label: 'Search' },
-                { href: '/combos/new', label: 'Create New Combo' },
-                { href: '/users/@me/combos/favorites', label: 'My Favorites' },
-                { href: '/users/@me/combos', label: 'My Combos' },
+                { href: '/combos/new', label: 'Create New Combo', hide: () => $user === null },
+                { href: '/users/@me/combos/favorites', label: 'My Favorites', hide: () => $user === null },
+                { href: '/users/@me/combos', label: 'My Combos', hide: () => $user === null },
             ]
         },
         {
@@ -22,7 +35,8 @@
             title: 'Profile',
             list: [
                 { href: '/users/@me', label: 'My Profile' },
-            ]
+            ],
+            hide: () => $user === null
         }
     ]
 
@@ -57,24 +71,28 @@
     <AppRail selected={storeCategory} background="bg-black/30">
         <AppRailTile label="Combos" value={'combos'}><iconify-icon height="40" icon="game-icons:card-pick"></iconify-icon></AppRailTile>
         <hr class="opacity-30" />
-        <AppRailTile label="Profile" value={'profile'}><iconify-icon height="40" icon="carbon:user-profile"></iconify-icon></AppRailTile>
+        {#if $user}
+            <AppRailTile label="Profile" value={'profile'}><iconify-icon height="40" icon="carbon:user-profile"></iconify-icon></AppRailTile>
+        {/if}
     </AppRail>
     <!-- Nav Links -->
     <section class="p-4 pb-20 space-y-4 overflow-y-auto">
-        {#each filteredMenuNavLinks as { id, title, list }, i}
+        {#each filteredMenuNavLinks as { id, title, list, hide }, i}
             {#if list.length > 0}
                 <!-- Title -->
                 <div {id} class="text-primary-500 font-bold uppercase px-4">{title}</div>
                 <!-- Navigation List -->
                 <nav class="list-nav">
                     <ul>
-                        {#each list as { href, label, badge }}
-                            <li on:click={onListItemClick} on:keypress>
-                                <a {href} value={href} class={classesActive(href)}>
-                                    <span class="flex-auto">{label}</span>
-                                    {#if badge}<span class="badge bg-accent-500 text-white">{badge}</span>{/if}
-                                </a>
-                            </li>
+                        {#each list as { href, label, badge, hide }, j}
+                            {#if !hide || hide() !== true}
+                                <li on:click={onListItemClick} on:keypress>
+                                    <a {href} value={href} class={classesActive(href)}>
+                                        <span class="flex-auto">{label}</span>
+                                        {#if badge}<span class="badge bg-accent-500 text-white">{badge}</span>{/if}
+                                    </a>
+                                </li>
+                            {/if}
                         {/each}
                     </ul>
                 </nav>
