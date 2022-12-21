@@ -15,6 +15,7 @@ export const auth = lucia({
             discordEmail: userData.discord_email,
             username: userData.username,
             role: userData.role,
+            isEnabled: userData.is_enabled,
         };
     },
 });

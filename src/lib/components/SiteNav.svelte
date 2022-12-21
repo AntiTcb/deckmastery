@@ -12,6 +12,7 @@
     let menuNavLinks: {
         id: string,
         title: string,
+        icon: string,
         list: {
             href: string,
             label: string,
@@ -23,6 +24,7 @@
         {
             id: 'combos',
             title: 'Combos',
+            icon: 'game-icons:card-pick',
             list: [
                 { href: '/combos/search', label: 'Search' },
                 { href: '/combos/new', label: 'Create New Combo', hide: () => $user === null },
@@ -33,10 +35,28 @@
         {
             id: 'users',
             title: 'Profile',
+            icon: 'carbon:user-profile',
             list: [
                 { href: '/users/@me', label: 'My Profile' },
             ],
             hide: () => $user === null
+        },
+        // {
+        //     id: 'editor',
+        //     title: 'Editor',
+        //     icon: 'carbon:edit',
+        //     list: [
+        //         { href: '/editor', label: 'Editor' },
+        //     ],
+        // },
+        {
+            id: 'admin',
+            title: 'Admin',
+            icon: 'grommet-icons:user-admin',
+            list: [
+                { href: '/admin/users', label: 'Manage Users' },
+            ],
+            hide: () => $user === null || $user.role !== 'admin'
         }
     ]
 
@@ -54,6 +74,7 @@
         switch ($storeCategory) {
             case('combos'): filteredMenuNavLinks = menuNavLinks.filter((linkSet: any) => linkSet.id === 'combos'); break;
             case('users'): filteredMenuNavLinks = menuNavLinks.filter((linkSet: any) => linkSet.id === 'users'); break;
+            case('admin'): filteredMenuNavLinks = menuNavLinks.filter((linkSet: any) => linkSet.id === 'admin'); break;
         }
     }
 
@@ -69,11 +90,12 @@
 
 <div class="grid grid-cols-[auto_1fr] h-full border-r border-black/5 {$$props.class ?? ''}">
     <AppRail selected={storeCategory} background="bg-black/30">
-        <AppRailTile label="Combos" value={'combos'}><iconify-icon height="40" icon="game-icons:card-pick"></iconify-icon></AppRailTile>
-        <hr class="opacity-30" />
-        {#if $user}
-            <AppRailTile label="Profile" value={'users'}><iconify-icon height="40" icon="carbon:user-profile"></iconify-icon></AppRailTile>
-        {/if}
+        {#each menuNavLinks as { id, title, icon, hide }, i }
+            {#if !hide || hide() !== true}
+                <AppRailTile label={title} value={id}><iconify-icon height="40" icon={icon}></iconify-icon></AppRailTile>
+                <hr class="opacity-30" />
+            {/if}
+        {/each}
     </AppRail>
     <!-- Nav Links -->
     <section class="p-4 pb-20 space-y-4 overflow-y-auto">

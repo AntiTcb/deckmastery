@@ -12,10 +12,10 @@
 
     const user = getUser();
 
-    $: showExtenderSearch = false;
-
     export let data : PageData;
-    let { cards } = data;
+
+    $: showExtenderSearch = false;
+    $: cards = data.cards;
 
     const onComboSelect = async (e: Card) => {
         goto(`/combos/${$page.params.cards}+${nameToRoute(e.name as string)}`, { invalidateAll: true });

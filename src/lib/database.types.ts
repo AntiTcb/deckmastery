@@ -161,7 +161,8 @@ export interface Database {
           discord_email: string | null
           patreon_email: string | null
           username: string
-          role: Database["public"]["Enums"]["roles"]
+          role: Database["public"]["Enums"]["roles"],
+          is_enabled: boolean
         }
         Insert: {
           id?: string
@@ -181,7 +182,8 @@ export interface Database {
           discord_email?: string | null
           patreon_email?: string | null
           username?: string
-          role?: Database["public"]["Enums"]["roles"]
+          role?: Database["public"]["Enums"]["roles"],
+          is_enabled?: boolean
         }
       }
     }

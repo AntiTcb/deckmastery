@@ -41,7 +41,7 @@
                     {/each}
                 </div>
                 <hr />
-                <!-- <iframe title="Replay" class="rounded-lg" src="{combo.replay_url}" width="100%" height="500" frameborder="0" allowtransparency={true} allowfullscreen={true}></iframe> -->
+                <iframe title="Replay" class="rounded-lg" src="{combo.replay_url}" width="100%" height="500" frameborder="0" allowtransparency={true} allowfullscreen={true}></iframe>
                 <a href="{combo.replay_url}" target="_blank" rel="noreferrer" class="btn btn-base bg-primary-500 rounded-lg">Open Replay in New Tab</a>
             </div>
         </div>

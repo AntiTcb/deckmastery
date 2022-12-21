@@ -69,6 +69,11 @@
         }
     }
 
+    const removeCard = async (card: Card) => {
+        cards = cards.filter(c => c.id !== card.id);
+        await loadCards();
+    }
+
     onMount(async () => {
         if (data.cards) {
             console.debug('Cards from pageLoad', data.cards);
@@ -102,8 +107,11 @@
                 </label>
                 {#if cards.length > 0}
                     <ul>
-                        {#each cards as card}
-                            <li>{card.name}</li>
+                        {#each cards as card, i}
+                            <li class="flex gap-2">
+                                <span>{card.name}</span>
+                                <!-- <iconify-icon on:click={removeCard(card)} on:keypress class="cursor-pointer text-red-500" icon="gridicons:cross-circle" height="24"></iconify-icon> -->
+                            </li>
                         {/each}
                     </ul>
                     <input type="hidden" name="cards" value={cards.map(c => c.id).join(',')} required />

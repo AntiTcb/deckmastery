@@ -11,4 +11,6 @@ export const load = (async ({ parent, locals }) => {
     if (user.role !== 'admin') {
         throw error(403, "Forbidden");
     }
+
+    return { user };
 }) satisfies LayoutServerLoad
