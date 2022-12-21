@@ -12,7 +12,6 @@
 
     const setupDataTable = async () => {
         const { data: combos } : { data: GetUserCombosResponseSuccess } = await getUserCombos($user!.id);
-        console.log('combos', combos);
         dataTableStore.updateSource(combos);
     }
 </script>

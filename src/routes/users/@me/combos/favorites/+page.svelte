@@ -18,7 +18,7 @@
     }
 </script>
 
-{#await setupDataTable() }
+{#await setupDataTable()}
     <p class="text-center">Loading...</p>
 {:then}
     <div class="table-container">

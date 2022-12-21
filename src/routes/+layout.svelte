@@ -41,7 +41,7 @@
         <AppBar>
             <svelte:fragment slot="lead">
                 <!-- Mobile Drawer Menu -->
-                <button on:click={drawerOpen} class="lg:!hidden btn btn-sm">
+                <button on:click={drawerOpen} type="button" class="lg:!hidden btn btn-sm">
                     <iconify-icon icon="ci:hamburger" height="24"></iconify-icon>
                 </button>
                 <a href="/">

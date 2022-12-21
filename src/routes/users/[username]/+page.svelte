@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { getUserCombos, type GetUserCombosResponseSuccess } from "$utils/supabase";
-    import { createDataTableStore, dataTableHandler, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
     import type { PageData } from "./$types";
+    import { getUserCombos, type GetUserCombosResponseSuccess } from "$utils/supabase";
+    import { createDataTableStore, dataTableHandler, tableInteraction, tableA11y, Divider } from '@skeletonlabs/skeleton'
 
     export let data: PageData;
     let { user } = data;
@@ -13,7 +13,6 @@
 
     const setupDataTable = async () => {
         const { data: combos } : { data: GetUserCombosResponseSuccess } = await getUserCombos(user.id);
-        console.log('combos', combos);
         dataTableStore.updateSource(combos);
     }
 </script>
@@ -24,7 +23,9 @@
         {#await setupDataTable()}
             <p class="text-center">Loading...</p>
         {:then}
-            <h2>Combos</h2>
+            <!-- <h3 class="my-2">Info</h3>
+            <Divider class="my-5" /> -->
+            <h3 class="my-2">Combos</h3>
             <div class="table-container">
                 <table class="table table-hover" role="grid" use:tableInteraction use:tableA11y>
                     <thead on:click={e => dataTableStore.sort(e)} on:keypress>

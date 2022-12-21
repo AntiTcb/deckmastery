@@ -31,7 +31,7 @@
             ]
         },
         {
-            id: 'profile',
+            id: 'users',
             title: 'Profile',
             list: [
                 { href: '/users/@me', label: 'My Profile' },
@@ -53,7 +53,7 @@
 
         switch ($storeCategory) {
             case('combos'): filteredMenuNavLinks = menuNavLinks.filter((linkSet: any) => linkSet.id === 'combos'); break;
-            case('profile'): filteredMenuNavLinks = menuNavLinks.filter((linkSet: any) => linkSet.id === 'profile'); break;
+            case('users'): filteredMenuNavLinks = menuNavLinks.filter((linkSet: any) => linkSet.id === 'users'); break;
         }
     }
 
@@ -72,13 +72,13 @@
         <AppRailTile label="Combos" value={'combos'}><iconify-icon height="40" icon="game-icons:card-pick"></iconify-icon></AppRailTile>
         <hr class="opacity-30" />
         {#if $user}
-            <AppRailTile label="Profile" value={'profile'}><iconify-icon height="40" icon="carbon:user-profile"></iconify-icon></AppRailTile>
+            <AppRailTile label="Profile" value={'users'}><iconify-icon height="40" icon="carbon:user-profile"></iconify-icon></AppRailTile>
         {/if}
     </AppRail>
     <!-- Nav Links -->
     <section class="p-4 pb-20 space-y-4 overflow-y-auto">
         {#each filteredMenuNavLinks as { id, title, list, hide }, i}
-            {#if list.length > 0}
+            {#if list.length > 0 && (!hide || hide() !== true)}
                 <!-- Title -->
                 <div {id} class="text-primary-500 font-bold uppercase px-4">{title}</div>
                 <!-- Navigation List -->

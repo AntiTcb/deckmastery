@@ -29,7 +29,9 @@ export async function searchCombos(cardIds: number[]) {
             uploaded_by:user(id, username),
             combo_likes:likes(liked_by(id, username))
         `)
-        .in('combos_cards.cards.id', cardIds);
+        .contains('cards', cardIds);
+
+        console.debug('Search combos DB response', data);
 
         return { data: data?.map(r => {
             return {
@@ -114,7 +116,7 @@ export const getUserFavoriteCombos = async(id: string, head: boolean = false) =>
             title,
             description,
             uploaded_by:user(username),
-            likes(liked_by:user(username)))`, {
+            likes!inner(liked_by:user(username)))`, {
                 head: head,
                 count: head ? 'exact' : undefined
             })

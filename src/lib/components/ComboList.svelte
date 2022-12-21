@@ -22,7 +22,7 @@
 
     const searchForCombos: any = async () => {
         if (!cardIds.length) return new Array<Database['public']['Tables']['combos']['Row']>();
-
+        console.debug('Searching for combos with card Ids: ', cardIds);
         const { data }: { data: SearchCombosResponseSuccess } = await searchCombos(cardIds);
         dataTableStore.updateSource(data);
     }
@@ -32,14 +32,14 @@
         await searchForCombos();
     });
 
-    onMount(() => {
-        searchForCombos();
+    onMount(async () => {
+        await searchForCombos();
     });
 </script>
 
 <section class="my-5">
     {#if dataTableStore}
-        <div class="table-container">
+        <div class="table-container rounded-lg">
             <table class="table table-hover" role="grid" use:tableInteraction use:tableA11y>
                 <thead>
                     <tr>
@@ -65,14 +65,20 @@
                                     Unknown
                                 {/if}
                             </td>
-                            <td role="gridcell" aria-colindex={3} tabindex="0"><a href="{row.replay}" rel="noreferrer" target="_blank">View</a></td>
+                            <td role="gridcell" aria-colindex={3} tabindex="0">
+                                <a href="{row.replay}" rel="noreferrer" target="_blank">
+                                    View <iconify-icon icon="icomoon-free:new-tab"></iconify-icon>
+                                </a>
+                            </td>
                             <td role="gridcell" aria-colindex={4} tabindex="0">
                                 <div class="inline-flex justify-center items-center content-around gap-3">
                                     <span class="like-count">{row.likes}</span>
-                                    {#if row.likedBy.find(l => l.liked_by.username === $user.username)}
-                                        <iconify-icon height="24" icon="bxs:like" class="text-green-600" title="Like" on:click={e => changeLike(e.target, row.id, 'unlike')} on:keypress></iconify-icon>
-                                    {:else}
-                                        <iconify-icon height="24" icon="bxs:like" class="text-white-600" title="Unlike" on:click={e => changeLike(e.target, row.id, 'like')} on:keypress></iconify-icon>
+                                    {#if $user}
+                                        {#if row.likedBy.find(l => l.liked_by.username === $user?.username)}
+                                            <iconify-icon height="24" icon="bxs:like" class="text-green-600" title="Like" on:click={e => changeLike(e.target, row.id, 'unlike')} on:keypress></iconify-icon>
+                                        {:else}
+                                            <iconify-icon height="24" icon="bxs:like" class="text-white-600" title="Unlike" on:click={e => changeLike(e.target, row.id, 'like')} on:keypress></iconify-icon>
+                                        {/if}
                                     {/if}
                                 </div>
                             </td>

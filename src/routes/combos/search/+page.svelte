@@ -8,7 +8,7 @@
     import { toastStore } from '@skeletonlabs/skeleton';
 
     const onSelectRow = (e: Card) => {
-        goto(`/combos/search/${nameToRoute(e.name)}`);
+        goto(`/combos/${nameToRoute(e.name)}`);
     }
 
     onMount(() => {

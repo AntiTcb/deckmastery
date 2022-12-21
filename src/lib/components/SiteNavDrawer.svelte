@@ -3,7 +3,6 @@
     import SiteNav from '$components/SiteNav.svelte';
 
     $: classesDrawer = $drawerStore.id === 'mobile-nav' ? 'lg:hidden' : '';
-    $: console.log(`Drawer store`, $drawerStore);
 </script>
 
 <Drawer class={classesDrawer}>

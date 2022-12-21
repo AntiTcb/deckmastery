@@ -28,6 +28,8 @@
     );
     dataTableStore.subscribe(v => dataTableHandler(v));
 
+    export const clearSearch = () => searchValue = '';
+
     export let onSelectRow: any;
     export let titleText: string;
     export let placeholder: string = '';
@@ -38,27 +40,26 @@
     <h2 class="my-2">{titleText}</h2>
     <input type="search" bind:value={searchValue} placeholder={placeholder} use:debounce={{ delay: 250, callback: async (value) => await getCards(value)}} />
 
-    {#if dataTableStore}
-        <div class="table-container">
+    {#if dataTableStore && searchValue}
+        <div class="table-container my-3 rounded-lg">
             <table class="table table-hover" role="grid" use:tableInteraction use:tableA11y>
                 <thead on:click={e => { dataTableStore.sort(e)}} on:keypress >
                     <tr>
-                        <th class="small-col"></th>
                         <th data-sort="name">Card</th>
                     </tr>
                 </thead>
                 <tbody>
                     {#each $dataTableStore.filtered as row, rowIndex}
                         <tr class="cursor-pointer" data-card-id="{row.id}" data-card-name="{row.name}" on:click={e => onSelectRow(row)} aria-rowindex="{rowIndex + 1}">
-                            <td class="small-col" role="gridcell" aria-colindex={1} tabindex="0">
+                            <td role="gridcell" aria-colindex={1} tabindex="0">
                                 <span class="inline-flex place-items-center gap-5"><img src="{row.image_url}" alt="{row.name}" class="aspect-yugioh-card h-28" /></span>
+                                <p>{row.name}</p>
                             </td>
-                            <td role="gridcell" aria-colindex={2} tabindex="0">{row.name}</td>
                         </tr>
                     {/each}
-                    {#if !$dataTableStore.filtered.length}
+                    {#if searchValue && !$dataTableStore.filtered.length}
                         <tr>
-                            <td colspan="2">No card with that name seems to exist{exclude.length ? ', or, you have already selected this card' : ''}. Try searching something else.</td>
+                            <td>No card with that name seems to exist{exclude.length ? ', or, you have already selected this card' : ''}. Try searching something else.</td>
                         </tr>
                     {/if}
                 </tbody>
@@ -70,9 +71,5 @@
 <style>
     ::placeholder {
         color: rgba(255,255,255,0.7);
-    }
-
-    .small-col {
-        max-width: 4rem;
     }
 </style>

@@ -1,6 +1,5 @@
 <script lang="ts">
-    import type { ActionData } from "./$types";
-    import { goto } from "$app/navigation";
+    import type { ActionData, PageData } from "./$types";
     import { enhance, type SubmitFunction } from "$app/forms";
     import { onMount } from "svelte";
     import CardSearchBox from "$components/CardSearchBox.svelte";
@@ -9,6 +8,8 @@
     import type { Card } from '$supabase';
 
     $: cards = new Array<Card>();
+
+    export let data: PageData;
 
     let toggleSearch: boolean = false;
 
@@ -69,6 +70,10 @@
     }
 
     onMount(async () => {
+        if (data.cards) {
+            console.debug('Cards from pageLoad', data.cards);
+            cards = data.cards;
+        }
         await loadCards();
     })
 </script>
@@ -81,16 +86,16 @@
                 <label for="title">
                     <span>Title:</span>
                 </label>
-                <input type="text" name="title" value="Tour Guide Sangan 2 Card Combo" required>
+                <input type="text" name="title" placeholder="Combo Title" required>
                 <label for="description">
                     <span>Description:</span>
                 </label>
-                <textarea name="description" required>Testy test</textarea>
+                <textarea name="description" placeholder="Description" required></textarea>
                 <label for="replayUrl">
                     <span>Replay URL:</span>
                     <span class="text-xs font-normal italic">(Only DuelingBook supported at this time)</span>
                 </label>
-                <input type="url" name="replayUrl" value="https://www.duelingbook.com/replay?id=785729-45014974" required>
+                <input type="url" name="replayUrl" placeholder="https://www.duelingbook.com/replay?id=XXXXXX-XXXXXX" required>
                 <label for="Cards">
                     <span>Cards needed to start combo:</span>
                     <span class="text-xs font-normal italic">(Max 3)</span>
