@@ -18,6 +18,8 @@
     }
 </script>
 
+<h2>My Favorites</h2>
+
 {#await setupDataTable()}
     <p class="text-center">Loading...</p>
 {:then}

@@ -6,7 +6,7 @@ export const load = (async ({ params: { username }}) => {
     const { data, error: sbError } = await supabase
         .from('user')
         .select('id, username')
-        .eq('username', username)
+        .ilike('username', `%${username}%`)
         .single();
 
     if (sbError)

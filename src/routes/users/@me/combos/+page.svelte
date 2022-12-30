@@ -16,6 +16,8 @@
     }
 </script>
 
+<h2>My Combos</h2>
+
 {#await setupDataTable() }
     <p class="text-center">Loading...</p>
 {:then}
