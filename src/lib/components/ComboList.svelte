@@ -1,65 +1,101 @@
 <script lang="ts">
-    import type { DataTableRow } from 'carbon-components-svelte/types/DataTable/DataTable.svelte';
-    import { searchReplays } from '$supabase'
+    import { createDataTableStore, dataTableHandler, tableInteraction, tableA11y } from '@skeletonlabs/skeleton'
+    import { likeCombo, unlikeCombo, searchCombos, type SearchCombosResponseSuccess } from '$supabase'
+    import { onMount } from 'svelte';
+    import { getUser } from '@lucia-auth/sveltekit/client';
+    import type { Database } from '$lib/database.types'
 
-    import { DataTable, Link, Toolbar, ToolbarContent, ToolbarSearch } from 'carbon-components-svelte'
+    const user = getUser();
 
-    export let starter: Card;
-    export let extender: Card | null = null;
+    export let cardIds = new Array<number>();
 
-    let replays : SearchResults.ReplaySearchResults[] = [];
+    let combos: SearchCombosResponseSuccess[] = new Array<SearchCombosResponseSuccess>;
 
-    $: dataTableRows = replays.map(r => {
-        return {
-            id: r.id,
-            title: r.title,
-            replay_url: r.replay_url,
-            uploaded_by: r.uploaded_by?.username || "Unknown",
-            rating: r.votes?.reduce((i, v) => i + v.vote, 0) ?? 0,
+    const dataTableStore = createDataTableStore(
+        combos,
+        {
+            search: '',
+            sort: ''
         }
-    })
+    );
+    dataTableStore.subscribe(v => dataTableHandler(v));
 
-    let search = '';
-
-    $: {
-        if (starter) {
-            searchForCombos();
-        }
+    const searchForCombos: any = async () => {
+        if (!cardIds.length) return new Array<Database['public']['Tables']['combos']['Row']>();
+        console.debug('Searching for combos with card Ids: ', cardIds);
+        const { data }: { data: SearchCombosResponseSuccess } = await searchCombos(cardIds);
+        dataTableStore.updateSource(data);
     }
 
-    const searchForCombos = async () => {
-        replays = await searchReplays(starter, extender);
-        console.log(replays);
-    }
+    const changeLike = (async (e: HTMLElement, comboId: number, direction: 'like' | 'unlike') => {
+        const { data, error } = direction === 'like' ? await likeCombo(comboId, $user!.id) : await unlikeCombo(comboId, $user!.id);
+        await searchForCombos();
+    });
 
-    const filterRows = (row: DataTableRow, value: string | number) : boolean => row.title.toLowerCase().includes((value as string).toLowerCase());
+    onMount(async () => {
+        await searchForCombos();
+    });
 </script>
 
-<div>
-    <DataTable sortable zebra stickyHeader headers={[
-        { key: "rating", value: "Rating" },
-        { key: "title", value: "Name" },
-        { key: "uploaded_by", value: "Uploaded By" },
-        { key: "replay_url", value: "Replay" },
-        ]}
-        rows={dataTableRows}>
-        <svelte:fragment slot="cell" let:row let:cell>
-            {#if cell.key === "replay_url"}
-                <Link href={cell.value} target="_blank">View DB Replay</Link>
-            {:else}
-                {cell.value}
-            {/if}
-        </svelte:fragment>
-        <Toolbar>
-            <ToolbarContent>
-                <ToolbarSearch persistent shouldFilterRows={filterRows} bind:value={search}  />
-            </ToolbarContent>
-        </Toolbar>
-    </DataTable>
-</div>
+<section class="my-5">
+    {#if dataTableStore}
+        <div class="table-container rounded-lg">
+            <table class="table table-hover" role="grid" use:tableInteraction use:tableA11y>
+                <thead>
+                    <tr>
+                        <th>Combo</th>
+                        <th>Uploaded By</th>
+                        <th>Replay</th>
+                        <th>Likes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each $dataTableStore.filtered as row, rowIndex}
+                        <tr aria-rowindex="{rowIndex + 1}">
+                            <td role="gridcell" aria-colindex={1} tabindex="0">
+                                <a href="/combos/{row.id}">
+                                    <p>{row.title}</p>
+                                    <span class="italic text-gray-300 whitespace-pre-wrap">{row.description}</span>
+                                </a>
+                            </td>
+                            <td role="gridcell" aria-colindex={2} tabindex="0">
+                                {#if row.uploadedBy}
+                                    <a href="/users/{row.uploadedBy}" target="_blank" rel="noreferrer">{row.uploadedBy}</a>
+                                {:else}
+                                    Unknown
+                                {/if}
+                            </td>
+                            <td role="gridcell" aria-colindex={3} tabindex="0">
+                                <a href="{row.replay}" rel="noreferrer" target="_blank">
+                                    View <iconify-icon icon="icomoon-free:new-tab"></iconify-icon>
+                                </a>
+                            </td>
+                            <td role="gridcell" aria-colindex={4} tabindex="0">
+                                <div class="inline-flex justify-center items-center content-around gap-3">
+                                    <span class="like-count">{row.likes}</span>
+                                    {#if $user}
+                                        {#if row.likedBy.find(l => l.liked_by.username === $user?.username)}
+                                            <iconify-icon height="24" icon="bxs:like" class="text-green-600" title="Like" on:click={e => changeLike(e.target, row.id, 'unlike')} on:keypress></iconify-icon>
+                                        {:else}
+                                            <iconify-icon height="24" icon="bxs:like" class="text-white-600" title="Unlike" on:click={e => changeLike(e.target, row.id, 'like')} on:keypress></iconify-icon>
+                                        {/if}
+                                    {/if}
+                                </div>
+                            </td>
+                        </tr>
+                    {/each}
+                    {#if !$dataTableStore.filtered.length}
+                        <tr>
+                            <td colspan="4">No combos exist yet. Go ahead and be the first to make one!</td>
+                        </tr>
+                    {/if}
+                </tbody>
+            </table>
+        </div>
+    {:else}
+        <div>Loading...</div>
+    {/if}
+</section>
 
 <style>
-    div {
-        margin: 1rem 0;
-    }
 </style>

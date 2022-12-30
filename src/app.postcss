@@ -1,0 +1,23 @@
+/* Write your global styles here, in PostCSS syntax */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    @apply h-full overflow-hidden text-white;
+}
+
+.card {
+    @apply rounded;
+}
+.card-header {
+    @apply text-2xl font-bold mb-5;
+}
+.card-body {
+    @apply border-t-2 border-accent-500 p-4;
+}
+
+input, textarea {
+    @apply !rounded-lg;
+}

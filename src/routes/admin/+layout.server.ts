@@ -1,13 +1,16 @@
-import type { LayoutServerLoad } from './$types';
+import type { LayoutServerLoad } from "./$types";
+import { error } from "@sveltejs/kit";
 
-import { error } from '@sveltejs/kit';
+export const load = (async ({ parent, locals }) => {
+    await parent();
+    const { session, user } = await locals.validateUser();
 
-export const load: LayoutServerLoad = async ({ parent }) => {
-    const { lucia } = await parent();
-
-    if (lucia?.user.Role !== 'admin') {
-        throw error(403, 'Forbidden');
+    if (!session) {
+        throw error(401, "You are not logged in.");
+    }
+    if (user.role !== 'admin') {
+        throw error(403, "Forbidden");
     }
 
-    return { user: lucia.user };
-};
+    return { user };
+}) satisfies LayoutServerLoad

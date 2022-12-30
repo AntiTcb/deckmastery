@@ -8,6 +8,8 @@ export const GET: RequestHandler = async ({ url }) => {
 
     if (url.searchParams.get('name')) {
         query = query.ilike('name', `%${url.searchParams.get('name')}%`);
+    } else {
+        query = query.eq('id', url.searchParams.get('id'));
     }
 
     const { data, error: dbError } = await query;
